@@ -38,7 +38,7 @@ CALL MVDBTOOLKIT.EXECUTE(OBJ)
 
 There are actually seperate routines for the different platforms.  
 
-# WFILEIO
+### WFILEIO
 
 This function handles doing O/S file io in a consitent manner across platforms. It takes a object as it's only param.
 
@@ -59,7 +59,7 @@ This function handles doing O/S file io in a consitent manner across platforms. 
 
 
 
-# MVDBTOOLKIT.WCALL - Front end to curl
+### MVDBTOOLKIT.WCALL - Front end to curl
 
 This is a front end to curl.  It is passed a object for options
 
