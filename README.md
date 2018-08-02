@@ -3,7 +3,7 @@ Toolkit to hold cross platform utilities for common actions that are different b
 
 The idea of this library is for it to be cross platform, handling both mv types and O/S differences
 
-# MVDBTOOLKIT.WPLATFORM
+#++ MVDBTOOLKIT.WPLATFORM
 
 This function gets the platform information.  Instead of guessing this routine pulls a json config item from the MD/Voc.
 This was faster/easier than detecting.  This could be improved in the future to do auto detection.
