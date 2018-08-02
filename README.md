@@ -20,21 +20,23 @@ MD/VOC MVDBTOOLKIT.PLATFORM.JSON
 
 This is for handing calling O/S commands.  It is passed a object and returns a object
 
+<pre>
 { "COMMAND":"COMMAND TO USE",
-*    "DIRECTORY":"OPTIONAL DIRECTORY TO RUN IN",
-*    "DEBUG":"YES OR NO",
-*    "DOCAPTURE":"YES OR NO, DEFAULT YES",
-*    "RETURNING":"YES OR NO, DEFAULT YES",
-*    "RTNDATA":"YES OR NO, DEFAULT NO",
-*    "PASSLIST":"ACTUAL PASSLIST"
-*    "DATA": ["ARRAY OF DATA STATEMENTS"],
-*    "RESULT: {
-*                "RESULT":"RESULT IF CAPTURED",
-*                "RTNDATA":"RESULT OF RTNDATA",
-*                "RETURNING":"RESULT OF RETURNING",
-*                "DEBUG":"DEBUG INFORMATION IF TURNED ON"
-*    }
-*    }
+    "DIRECTORY":"OPTIONAL DIRECTORY TO RUN IN",
+    "DEBUG":"YES OR NO",
+    "DOCAPTURE":"YES OR NO, DEFAULT YES",
+    "RETURNING":"YES OR NO, DEFAULT YES",
+    "RTNDATA":"YES OR NO, DEFAULT NO",
+    "PASSLIST":"ACTUAL PASSLIST"
+    "DATA": ["ARRAY OF DATA STATEMENTS"],
+    "RESULT: {
+                "RESULT":"RESULT IF CAPTURED",
+                "RTNDATA":"RESULT OF RTNDATA",
+                "RETURNING":"RESULT OF RETURNING",
+                "DEBUG":"DEBUG INFORMATION IF TURNED ON"
+    }
+    }
+</pre>
 
 CALL MVDBTOOLKIT.EXECUTE(OBJ)
 
@@ -44,6 +46,7 @@ There are actually seperate routines for the different platforms.
 
 This function handles doing O/S file io in a consitent manner across platforms. It takes a object as it's only param.
 
+<pre>
 * INOBJ
 *
 * { "ACTION":"READ,WRTE,DELETE",
@@ -58,13 +61,14 @@ This function handles doing O/S file io in a consitent manner across platforms. 
 *       "statusmsg":"statusmsg" 
 *   }
 * }
-
+</pre>
 
 
 ### MVDBTOOLKIT.WCALL - Front end to curl
 
 This is a front end to curl.  It is passed a object for options
 
+<pre>
 * MVDBTOOLKIT.WOBJ
 * { "method":"GET,PUT,POST,ETC",
 *    "url":"URL TO CALL",
@@ -78,6 +82,6 @@ This is a front end to curl.  It is passed a object for options
 *        "curl_cmnd":"Actual curl command created"
 *    }
 *  }
-
+</pre>
 
 
