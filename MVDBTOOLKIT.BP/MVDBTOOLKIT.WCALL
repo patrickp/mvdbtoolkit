@@ -19,7 +19,8 @@ SUBROUTINE MVDBTOOLKIT.WCALL(MVDBTOOLKIT.WOBJ)
 *    "response": {
 *        "result":"RESULT",
 *        "status":"STATUS",
-*        "curl_cmnd":"Actual curl command created"
+*        "curl_cmnd":"Actual curl command created",
+*         "error": "error"
 *    }
 *  }
 
@@ -31,7 +32,6 @@ CALL MVDBTOOLKIT.WOBJ(POBJ,"GET","filedelim",FILE.DELIM,"",RERR)
 
 IF MV.TYPE="" THEN
     CALL MVDBTOOLKIT.WOBJ(POBJ,"GET","error",THIS.ERROR,"",RERR)
-    DEBUG
     PRINT "NO MV TYPE: ":THIS.ERROR
     RETURN
 END
