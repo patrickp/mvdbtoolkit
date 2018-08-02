@@ -1,0 +1,73 @@
+SUBROUTINE SMMVC.WEXECUTE(EOBJ)
+INCLUDE SMMVC.WEXECUTE.INCLUDE
+**********************************************************************
+*
+* Copyright (C) 2017 Zumasys, Inc., All Rights Reserved
+*
+* Written by: Patrick Payne, Zumasys
+* Date: June 12, 2018
+* Description: Execute library
+*
+**********************************************************************
+*
+* EOBJ
+* { "COMMAND":"COMMAND TO USE",
+*    "DIRECTORY":"OPTIONAL DIRECTORY TO RUN IN",
+*    "DEBUG":"YES OR NO",
+*    "DOCAPTURE":"YES OR NO, DEFAULT YES",
+*    "RETURNING":"YES OR NO, DEFAULT YES",
+*    "RTNDATA":"YES OR NO, DEFAULT NO",
+*    "PASSLIST":"ACTUAL PASSLIST"
+*    "DATA": ["ARRAY OF DATA STATEMENTS"],
+*    "RESULT: {
+*                "RESULT":"RESULT IF CAPTURED",
+*                "RTNDATA":"RESULT OF RTNDATA",
+*                "RETURNING":"RESULT OF RETURNING",
+*                "DEBUG":"DEBUG INFORMATION IF TURNED ON"
+*    }
+*    }
+
+IF EOBJ="NEW" THEN
+    * CREATE A NEW OBJECT AND RETURN IT
+    EJSON=\{ "command":"",\
+    EJSON:=\ "directory":"",\
+    EJSON:=\ "debug":"NO",\
+    EJSON:=\ "returning":"YES",\
+    EJSON:=\ "rtndata":"YES",\
+    EJSON:=\ "passlist":"",\
+    EJSON:=\ "data: []"\
+    EJSON:=\}\
+
+    CALL WOBJ(EOBJ,"FROMSTRING","",EJSON,"",RERR)
+    RETURN
+END
+
+CALL WOBJ(EOBJ,"GET","command"      ,EXECUTE.COMMAND        ,"",RERR)
+CALL WOBJ(EOBJ,"GET","directory"    ,EXECUTE.DIRECTORY      ,"",RERR)
+CALL WOBJ(EOBJ,"GET","docapture"    ,EXECUTE.OCAPTURE       ,"",RERR)
+CALL WOBJ(EOBJ,"GET","returning"    ,EXECUTE.RETURNING      ,"",RERR)
+CALL WOBJ(EOBJ,"GET","rtndata"      ,EXECUTE.RTNDATA        ,"",RERR)
+CALL WOBJ(EOBJ,"GET","passlist"     ,EXECUTE.PASSLIST       ,"",RERR)
+
+* ERROR HANDLING TODO
+
+CALL WOBJ(EOBJ,"SET.OBJECT","result","{}","",RERR)
+
+CALL SMMVC.WPLATFORM(PLATFORMOBJ)
+
+CALL WOBJ(PLATFORMOBJ,"GET","mvtype",MV.TYPE,"",RERR)
+
+BEGIN CASE
+   CASE MV.TYPE='D3'
+       CALL SMMVC.WEXECUTE.D3(EOBJ)
+   CASE MV.TYPE="JBASE"
+       CALL SMMVC.WEXECUTE.JBASE(EOBJ)
+   CASE 1
+        CALL WOBJ(EOBJ,"SET","result.error","Invalid mvplatform=":MV.TYPE,"",RERR)
+END CASE
+*
+*EXECUTE CHAR(255):'k':CMND CAPTURING RESULT
+*CONVERT CHAR(0) TO '' IN RESULT
+*CONVERT CHAR(255) TO '' IN RESULT
+RETURN
+

@@ -1,0 +1,261 @@
+**********************************************************************
+*
+* Copyright (C) 2017 Zumasys, Inc., All Rights Reserved
+*
+* Written by: Patrick Payne, Zumasys
+* Date: December 2017
+* Description: WOBJ.TEST - QC Testing tool for WOBJ
+*
+**********************************************************************
+*
+* Build test json to parse
+*
+JSON =  \{\
+JSON := \ "stringtest":"stringtestvalue",\
+JSON := \ "numbertest": 100.12,\
+JSON := \ "booleantesttrue": True, \
+JSON := \ "booleantestfalse": False, \
+JSON := \ "nulltest": null \
+JSON := \}\
+*
+* Lets build the obj
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"FROMSTRING","","{}","",RERR)
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"SET.ARRAY","arraytest","[]","",RERR)
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"SET.STRING","arraytest[-1]","1","",RERR)
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"SET.STRING","arraytest[-1]","2","",RERR)
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"SET.OBJECT","objecttest",'{ "objecttestv1":"ok" }',"",RERR)
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"SET.STRING","stringtest","stringtestvalue","",RERR)
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"SET.NUMBER","numbertest",100.12,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"SET.BOOLEAN","booleantesttrue","True","",RERR)
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"SET.BOOLEAN","booleantestfalse","False","",RERR)
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"SET.NULL","nulltest","NULL","",RERR)
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"TOSTRING","",JSON,"",RERR)
+TESTOBJ=""
+*
+* TEST 1 - PARSE
+*
+TEST="parse"
+GOSUB start.test
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"FROMSTRING","",JSON,"",RERR)
+GOSUB process.error
+IF NOT(RERR<1>) THEN
+   TEST.MSG="Parse ok"
+   TEST.STATUS=1
+END
+GOSUB end.test
+
+*
+* TEST 2 - GetString
+*
+TEST="GetString"
+GOSUB start.test
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"GET","stringtest",VALUE,"",RERR)
+GOSUB process.error
+IF NOT(RERR<1>) THEN
+   TEST.MSG="String Found: (":VALUE:")"
+   IF VALUE="stringtestvalue" THEN
+      TEST.STATUS=1
+   END ELSE
+       TEST.STATUS=0
+   END
+END
+GOSUB end.test
+*
+* TEST 3 - GetNumber
+*
+TEST="GetNumber"
+GOSUB start.test
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"GET","numbertest",VALUE,"",RERR)
+GOSUB process.error
+IF NOT(RERR<1>) THEN
+   TEST.MSG="Number Found: (":VALUE:")"
+   BEGIN CASE
+      CASE NOT(NUM(VALUE))
+      CASE VALUE=100.12
+      	TEST.STATUS=1
+      CASE 1
+   END CASE
+END
+GOSUB end.test
+*
+* TEST 4 - GETBoolean
+*
+TEST="GetBooleanTrue"
+GOSUB start.test
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"GET","booleantesttrue",VALUE,"",RERR)
+GOSUB process.error
+IF NOT(RERR<1>) THEN
+   TEST.MSG="Boolean Found: (":VALUE:")"
+   BEGIN CASE
+      CASE VALUE="true"
+      	TEST.STATUS=1
+      CASE 1
+   END CASE
+END
+GOSUB end.test
+*
+* TEST 5 - GETBoolean
+*
+TEST="GetBooleanFalse"
+GOSUB start.test
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"GET","booleantestfalse",VALUE,"",RERR)
+GOSUB process.error
+IF NOT(RERR<1>) THEN
+   TEST.MSG="Boolean Found: (":VALUE:")"
+   BEGIN CASE
+      CASE VALUE="false"
+      	TEST.STATUS=1
+      CASE 1
+   END CASE
+END
+GOSUB end.test
+*
+* TEST 6 - get null
+*
+TEST="GetNull"
+GOSUB start.test
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"GET","nulltest",VALUE,"",RERR)
+GOSUB process.error
+IF NOT(RERR<1>) THEN
+   TEST.MSG="testnull Found: (":VALUE:")"
+   BEGIN CASE
+      CASE VALUE="null"
+      	TEST.STATUS=1
+      CASE 1
+   END CASE
+END
+GOSUB end.test
+*
+* TEST 7 - get length
+*
+TEST="LENGTH"
+GOSUB start.test
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"LENGTH","arraytest",VALUE,"",RERR)
+GOSUB process.error
+IF NOT(RERR<1>) THEN
+   TEST.MSG="LENGTH(arraytest) Found: (":VALUE:")"
+   BEGIN CASE
+      CASE VALUE="2"
+      	TEST.STATUS=1
+      CASE 1
+   END CASE
+END
+GOSUB end.test
+*
+* TEST 8 get array sub part
+*
+TEST="get array part"
+GOSUB start.test
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"GET","arraytest[1]",VALUE,"",RERR)
+GOSUB process.error
+IF NOT(RERR<1>) THEN
+   TEST.MSG="arraytest[2] Found: (":VALUE:")"
+   BEGIN CASE
+      CASE VALUE="2"
+      	TEST.STATUS=1
+      CASE 1
+   END CASE
+END
+GOSUB end.test
+*
+* TEST 9 - get object keys
+*
+TEST="KEYS"
+GOSUB start.test
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"KEYS","objecttest",VALUE,"",RERR)
+GOSUB process.error
+IF NOT(RERR<1>) THEN
+   TEST.MSG="KEYS Found: (":VALUE:")"
+   BEGIN CASE
+      CASE VALUE="objecttestv1"
+      	TEST.STATUS=1
+      CASE 1
+   END CASE
+END
+GOSUB end.test
+
+*
+* TEST 10- add item and retrieve
+*
+TEST="addstring2"
+GOSUB start.test
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"SET.STRING","string2","string2","",RERR)
+GOSUB process.error
+IF NOT(RERR<1>) THEN
+   TEST.MSG="Added string2"
+END
+GOSUB end.test
+*
+* TEST 11 - get string2
+*
+TEST="getstring2"
+GOSUB start.test
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"GET","string2",VALUE,"",RERR)
+GOSUB process.error
+IF NOT(RERR<1>) THEN
+   TEST.MSG="string2 Found: (":VALUE:")"
+   BEGIN CASE
+      CASE VALUE="string2"
+      	TEST.STATUS=1
+      CASE 1
+   END CASE
+END
+GOSUB end.test
+*
+* TEST 12- add item and retrieve
+*
+TEST="addnull2"
+GOSUB start.test
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"SET.NULL","null2","NULL","",RERR)
+GOSUB process.error
+IF NOT(RERR<1>) THEN
+   TEST.MSG="Add Null2"
+END
+GOSUB end.test
+*
+* TEST 11 - get NULL2
+*
+TEST="getnull2"
+GOSUB start.test
+CALL MVDBTOOLKIT.WOBJ(TESTOBJ,"GET","null2",VALUE,"",RERR)
+GOSUB process.error
+IF NOT(RERR<1>) THEN
+   TEST.MSG="null2 Found: (":VALUE:")"
+   BEGIN CASE
+      CASE VALUE="null"
+      	TEST.STATUS=1
+      CASE 1
+   END CASE
+END
+GOSUB end.test
+
+
+CALL WOBJ(TESTOBJ,"TOSTRING","",OUT.JSON,"PRETTIFY",RERR)
+PRINT OUT.JSON
+
+
+STOP
+*
+GOSUB start.test
+RETURN
+*
+process.error: *
+IF RERR<1> THEN
+   TEST.STATUS=-1
+   TEST.MSG=RERR<1>
+END
+RETURN
+*
+*
+start.test: *
+TEST.STATUS=0
+TEST.MSG="Success"
+PRINT "Test: ":TEST[1,20]"L(#20)":
+RETURN
+*
+end.test: *
+PRINT "  ":TEST.MSG[1,60]"L(#60)":
+PRINT " ":
+IF TEST.STATUS THEN PRINT "[Ok    ]" ELSE PRINT @(-13):"[Failed]":@(-14)
+RETURN
+
