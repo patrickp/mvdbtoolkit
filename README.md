@@ -9,10 +9,12 @@ This function gets the platform information.  Instead of guessing this routine p
 This was faster/easier than detecting.  This could be improved in the future to do auto detection.
 
 MD/VOC MVDBTOOLKIT.PLATFORM.JSON
+<pre>
 { "mvtype": "D3,JBASE",
   "filedelim": "\ or /",
   "platform": "WINDOWS or LINUX"
 }
+</pre>
 
 ### MVDBTOOLKIT.WEXECUTE
 
