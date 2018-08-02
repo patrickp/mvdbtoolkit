@@ -1,0 +1,29 @@
+      SUBROUTINE MVDBTOOLKIT.WPLATFORM(PLATFORMOBJ)
+      **********************************************************************
+      *
+      * Copyright (C) 2017 Zumasys, Inc., All Rights Reserved
+      *
+      * Written by: Patrick Payne, Zumasys
+      * Date: June 12, 2018
+      * Description: WPLATFORM OBJ
+      *
+      **********************************************************************
+      *
+      *
+      * PLATFORMOBJ
+      *
+      * {
+      *   "platform":" WINDOWS OR LINUX",
+      *   "mvtype"  :" JBASE, D3, UNIDATA, UNIVERSE, OPENQM",
+      *   "filedelim": "delimiter used between file names, usually \ or /"
+      * }
+
+      OPEN "DICT","SM.BP" TO DICT.FI.SM.BP ELSE RETURN
+
+      READ PLATFORMOBJ.JSON FROM DICT.FI.SM.BP, "PLATFORM.JSON" ELSE
+         PLATFORMOBJ.JSON='"{ "error":"NO PLATFORM.JSON IN DICT SM.BP" }'
+      END
+
+      CALL MVDBTOOLKIT.WOBJ(PLATFORMOBJ,"FROMSTRING","",PLATFORMOBJ.JSON,"",RERR)
+
+      RETURN
