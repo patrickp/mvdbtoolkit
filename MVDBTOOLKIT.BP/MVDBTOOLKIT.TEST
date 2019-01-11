@@ -1,7 +1,7 @@
 WOBJ.RTNE="MVDBTOOLKIT.WOBJ"
  CALL @WOBJ.RTNE(OBJ,"FROMSTRING","","{}","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","method","GET","",RERR)
- CALL @WOBJ.RTNE(OBJ,"SET","url","https://www.multivaluedb.com/powerbiapi/wresttest","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","url","https://www.google.com","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","insecure","Y","",RERR)
  CALL MVDBTOOLKIT.WCALL(OBJ)
  DEBUG
