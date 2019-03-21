@@ -77,7 +77,7 @@ This is a front end to curl.  It is passed a object for options
 *    "insecure":"Yes,Y,YES - Sets the -k on curl",
 *    "timeout": ## (default is 45)
 *    "response": {
-*        "result":"RESULT",
+*        "data":"RESULT",
 *        "status":"STATUS",
 *        "curl_cmnd":"Actual curl command created"
 *    }
