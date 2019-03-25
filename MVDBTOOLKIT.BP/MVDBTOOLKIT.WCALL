@@ -103,10 +103,10 @@
 
       * NOW ADD THE URL
 
-      WEB.URL=SWAP(WEB.URL,' ','%20')
-      WEB.URL=SWAP(WEB.URL,'@','%40')
-      WEB.URL=SWAP(WEB.URL,'$','%24')
-      *WEB.URL=SWAP(WEB.URL,'/','%2F')
+      WEB.URL=EXCHANGE(WEB.URL,' ','%20')
+      WEB.URL=EXCHANGE(WEB.URL,'@','%40')
+      WEB.URL=EXCHANGE(WEB.URL,'$','%24')
+      *WEB.URL=EXCHANGE(WEB.URL,'/','%2F')
 
       CMND:=' "':WEB.URL:'"'
 

@@ -50,7 +50,7 @@ WHILE INDEXPOS > 0 AND INDEXPOS < LEN.JSTR DO
                     INDEXPOS+=1
                     CODE=JSTR[INDEXPOS,4]
                     IF CODE[1,2]="00" THEN
-                        PARSESTRING:=ICONV(CODE[3,2],"MX")
+                        PARSESTRING:=ICONV(CODE[3,2],"MX0C")
                     END ELSE
                         PARSESTRING:="_" ;* Poor substitute for invalid Unicode character!
                         PSERRORS<-1> = "Invalid Unicode character at position ":INDEXPOS-1:" : u":CODE
