@@ -1,0 +1,40 @@
+SUBROUTINE MVDBTOOLKIT.WEXECUTE.UNIVERSE(EOBJ)
+INCLUDE MVDBTOOLKIT.WEXECUTE.INCLUDE
+**********************************************************************
+*
+* Copyright (C) 2017 Zumasys, Inc., All Rights Reserved
+*
+* Written by: Patrick Payne, Zumasys
+* Date: June 12, 2018
+* Description: Execute library UNIVERSE VERSION
+*
+**********************************************************************
+
+E.RESULTS=""
+E.RETURNING=""
+E.RTNDATA=""
+
+CALL MVDBTOOLKIT.WOBJ(EOBJ,"LENGTH","data",NUM.DATA,"",RERR)
+
+FOR X=1 TO NUM.DATA
+    CALL MVDBTOOLKIT.WOBJ(EOBJ,"GET","data[":X-1:"]",THIS.DATA,"",RERR)
+    *PRINT "DATA: ":THIS.DATA
+    DATA THIS.DATA
+NEXT X
+
+BEGIN CASE
+    CASE EXECUTE.DOCAPTURE="N"
+        EXECUTE \sh -c '\:EXECUTE.COMMAND:\'\ 
+    CASE 1
+        EXECUTE \sh -c '\:EXECUTE.COMMAND:\'\ CAPTURING E.RESULT
+END CASE
+
+OPENPATH "/tmp" TO TMP.FILE ELSE RETURN
+WRITE EXECUTE.COMMAND ON TMP.FILE, "wexecute.sh"
+
+CONVERT CHAR(0) TO '' IN E.RESULT
+CONVERT CHAR(255) TO '' IN E.RESULT
+
+CALL MVDBTOOLKIT.WOBJ(EOBJ,"SET.STRING","result.result",E.RESULT,"",RERR)
+
+RETURN
