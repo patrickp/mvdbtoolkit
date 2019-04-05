@@ -1,8 +1,67 @@
 WOBJ.RTNE="MVDBTOOLKIT.WOBJ"
  CALL @WOBJ.RTNE(OBJ,"FROMSTRING","","{}","",RERR)
- CALL @WOBJ.RTNE(OBJ,"SET","method","GET","",RERR)
- CALL @WOBJ.RTNE(OBJ,"SET","url","https://www.google.com","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","method","POST","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","url","https://httpbin.org/anything?field1=value1","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","insecure","Y","",RERR)
+ 
+ CALL @WOBJ.RTNE(OBJ,"SET.OBJECT","headers","{}","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","headers.X-TEST-HEADER","headertest","",RERR)
+ 
+ CALL @WOBJ.RTNE(OBJ,"SET.ARRAY","formfields","[]","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET.OBJECT","formfields[-1]","{}","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","formfields[0].name","field2","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","formfields[0].value","VALUE2","",RERR)
+ 
+ CALL @WOBJ.RTNE(SOBJ,"FROMSTRING","","{}","",RERR)
+ CALL @WOBJ.RTNE(SOBJ,"SET","name","field3","",RERR)
+ CALL @WOBJ.RTNE(SOBJ,"SET","value","<EXAMPLE HTML>","",RERR)
+ CALL @WOBJ.RTNE(SOBJ,"TOSTRING","",SJSON,"",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET.OBJECT","formfields[-1]",SJSON,"",RERR)
+ 
  CALL MVDBTOOLKIT.WCALL(OBJ)
+ 
+ *CALL @WOBJ.RTNE(OBJ,"TOSTRING","",OUT.JSON,"PRETTIFY",RERR)
+ CALL @WOBJ.RTNE(OBJ,"GET","response.curl_cmnd",CURL.CMND,"",RERR)
+ 
+ PRINT "CURL CMND: "
+ PRINT CURL.CMND
+ 
  CALL @WOBJ.RTNE(OBJ,"GET","response.data",RESPONSE,"",RERR)
- PRINT "RESPONSE=":RESPONSE
+ GOSUB print.response
+ CALL @WOBJ.RTNE(ROBJ,"FROMSTRING","",RESPONSE,"",RERR)
+ 
+ CHECK.FIELD="args.field1"; VALUE="value1"; GOSUB check.value
+ CHECK.FIELD="method"; VALUE="POST"; GOSUB check.value
+ CHECK.FIELD="form.field2"; VALUE="VALUE2"; GOSUB check.value
+ CHECK.FIELD="form.field3"; VALUE="<EXAMPLE HTML>"; GOSUB check.value
+ CHECK.FIELD="headers.X-Test-Header"; VALUE="headertest"; GOSUB check.value
+ STOP
+ 
+ print.response: *
+ CONVERT CHAR(10) TO '' IN RESPONSE
+ CONVERT CHAR(13) TO CHAR(254) IN RESPONSE
+ NUM.ENTRIES=DCOUNT(RESPONSE,CHAR(254))
+ FOR X=1 TO NUM.ENTRIES
+     PRINT RESPONSE<X>
+ NEXT X
+ RETURN
+ 
+ check.value: *
+ CALL @WOBJ.RTNE(ROBJ,"GET",CHECK.FIELD,CHECK.VALUE,"",RERR)
+ IF CHECK.VALUE = VALUE THEN OK=1 ELSE OK=0
+ MSG=CHECK.FIELD:"=":CHECK.VALUE
+ GOSUB show.message
+ RETURN
+ 
+ 
+ show.message: *
+ 
+ PRINT MSG[1,60]"L(#60)":'[':
+ IF OK THEN
+    PRINT "OK":
+ END ELSE
+    PRINT @(-13):"FAILED":@(-14):
+ END
+ PRINT ']'
+ RETURN
+ 
