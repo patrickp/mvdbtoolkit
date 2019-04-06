@@ -17,7 +17,8 @@
       *    "formfields": [
       *         {
       *            "name":"field name",
-      *            "value":"field value"
+      *            "value":"field value",
+      *            "fieldtype":"blank or file" for now
       *         }
       *     ],
       *
@@ -115,10 +116,11 @@
          P="formfields[":X-1:"]"
          CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET",P:'.name',FIELD.NAME,"",RERR)
          CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET",P:'.value',FIELD.VALUE,"",RERR)
+         CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET",P:'.fieldtype',FIELD.TYPE,"",RERR)
          IF TRIM(FIELD.NAME) # "" THEN
             * < > @ ALL MEAN SPECIAL THINGS WITH A -F.  If that exists in the file you need
             * to use --form-string
-            IF INDEX(FIELD.VALUE,'<',1) OR INDEX(FIELD.VALUE,'>',1) OR INDEX(FIELD.VALUE,'@',1) THEN
+            IF INDEX(FIELD.VALUE,'<',1) OR INDEX(FIELD.VALUE,'>',1) OR INDEX(FIELD.VALUE,'@',1) OR INDEX(FIELD.VALUE,'$',1) AND FIELD.TYPE # "file" THEN
                TMP.CMND="--form-string "
             END ELSE
                TMP.CMND="-F "

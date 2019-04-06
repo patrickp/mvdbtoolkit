@@ -74,6 +74,9 @@ This is a front end to curl.  It is passed a object for options
 *    "url":"URL TO CALL",
 *    "headers": { "HEADERNAME":"VALUE", "HEADERNAME":"VALUE" },
 *    "body":"BODY",
+*    "formfields": [
+*        { "name":"field name","value":"field value"}
+*    ],
 *    "insecure":"Yes,Y,YES - Sets the -k on curl",
 *    "timeout": ## (default is 45)
 *    "response": {

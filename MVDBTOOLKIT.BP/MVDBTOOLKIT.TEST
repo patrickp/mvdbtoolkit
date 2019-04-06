@@ -10,13 +10,14 @@ WOBJ.RTNE="MVDBTOOLKIT.WOBJ"
  CALL @WOBJ.RTNE(OBJ,"SET.ARRAY","formfields","[]","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET.OBJECT","formfields[-1]","{}","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","formfields[0].name","field2","",RERR)
- CALL @WOBJ.RTNE(OBJ,"SET","formfields[0].value","VALUE2","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","formfields[0].value","VALUE2$","",RERR)
  
  CALL @WOBJ.RTNE(SOBJ,"FROMSTRING","","{}","",RERR)
  CALL @WOBJ.RTNE(SOBJ,"SET","name","field3","",RERR)
  CALL @WOBJ.RTNE(SOBJ,"SET","value","<EXAMPLE HTML>","",RERR)
  CALL @WOBJ.RTNE(SOBJ,"TOSTRING","",SJSON,"",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET.OBJECT","formfields[-1]",SJSON,"",RERR)
+ 
  
  CALL MVDBTOOLKIT.WCALL(OBJ)
  
@@ -32,7 +33,7 @@ WOBJ.RTNE="MVDBTOOLKIT.WOBJ"
  
  CHECK.FIELD="args.field1"; VALUE="value1"; GOSUB check.value
  CHECK.FIELD="method"; VALUE="POST"; GOSUB check.value
- CHECK.FIELD="form.field2"; VALUE="VALUE2"; GOSUB check.value
+ CHECK.FIELD="form.field2"; VALUE="VALUE2$"; GOSUB check.value
  CHECK.FIELD="form.field3"; VALUE="<EXAMPLE HTML>"; GOSUB check.value
  CHECK.FIELD="headers.X-Test-Header"; VALUE="headertest"; GOSUB check.value
  STOP
