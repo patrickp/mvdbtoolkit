@@ -8,7 +8,8 @@ The idea of this library is for it to be cross platform, handling both mv types 
 This function gets the platform information.  Instead of guessing this routine pulls a json config item from the MD/Voc.
 This was faster/easier than detecting.  This could be improved in the future to do auto detection.
 
-MD/VOC MVDBTOOLKIT.PLATFORM.JSON
+DICT MVDBTOOLKIT.BP MVDBTOOLKIT.PLATFORM.JSON
+
 <pre>
 { "mvtype": "D3,JBASE",
   "filedelim": "\ or /",
