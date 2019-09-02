@@ -48,6 +48,7 @@ There are actually seperate routines for the different platforms.
 A unique routine exists for each platform
 
 |  Feature   | jBase    |  D3   |   Universe   |  Unidata  |   OpenQM       |
+| ---------- | -------- | ----- | ------------ | --------- | -------------- |
 | Built      |   Yes    |  No   |     No       |    No     |     No         |
 | returning  |   No     |  No   |     No       |    No     |     No         |
 | rtndata    |   No     |  No   |     No       |    No     |     No         |
