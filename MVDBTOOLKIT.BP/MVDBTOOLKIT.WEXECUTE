@@ -11,19 +11,19 @@ INCLUDE MVDBTOOLKIT.WEXECUTE.INCLUDE
 **********************************************************************
 *
 * EOBJ
-* { "COMMAND":"COMMAND TO USE",
-*    "DIRECTORY":"OPTIONAL DIRECTORY TO RUN IN",
-*    "DEBUG":"YES OR NO",
-*    "DOCAPTURE":"YES OR NO, DEFAULT YES",
-*    "RETURNING":"YES OR NO, DEFAULT YES",
-*    "RTNDATA":"YES OR NO, DEFAULT NO",
-*    "PASSLIST":"ACTUAL PASSLIST"
-*    "DATA": ["ARRAY OF DATA STATEMENTS"],
-*    "RESULT: {
-*                "RESULT":"RESULT IF CAPTURED",
-*                "RTNDATA":"RESULT OF RTNDATA",
-*                "RETURNING":"RESULT OF RETURNING",
-*                "DEBUG":"DEBUG INFORMATION IF TURNED ON"
+* { "command":"COMMAND TO USE",
+*    "directory":"OPTIONAL DIRECTORY TO RUN IN",
+*    "debug":"YES OR NO",
+*    "docapture":"YES OR NO, DEFAULT YES",
+*    "returning":"YES OR NO, DEFAULT YES",
+*    "rtndata":"YES OR NO, DEFAULT NO",
+*    "passlist":"ACTUAL PASSLIST"
+*    "data": ["ARRAY OF DATA STATEMENTS"],
+*    "result: {w
+*                "result":"RESULT IF CAPTURED",
+*                "rtndata":"RESULT OF RTNDATA",
+*                "returning":"RESULT OF RETURNING",
+*                "debug":"DEBUG INFORMATION IF TURNED ON"
 *    }
 *    }
 
@@ -48,6 +48,20 @@ CALL MVDBTOOLKIT.WOBJ(EOBJ,"GET","docapture"    ,EXECUTE.OCAPTURE       ,"",RERR
 CALL MVDBTOOLKIT.WOBJ(EOBJ,"GET","returning"    ,EXECUTE.RETURNING      ,"",RERR)
 CALL MVDBTOOLKIT.WOBJ(EOBJ,"GET","rtndata"      ,EXECUTE.RTNDATA        ,"",RERR)
 CALL MVDBTOOLKIT.WOBJ(EOBJ,"GET","passlist"     ,EXECUTE.PASSLIST       ,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(EOBJ,"GET","debug"        ,EXECUTE.DEBUG          ,"",RERR)
+IF EXECUTE.DEBUG = "" THEN
+    CALL MVDBTOOLKIT.WOBJ(EOBJ,"GET","DEBUG",EXECUTE.DEBUG,"",RERR)
+END
+
+IF OCONV(EXECUTE.DEBUG[1,1],"MCU") = "Y" OR EXECUTE.DEBUG="1" THEN EXECUTE.DEBUG=1 ELSE EXECUTE.DEBUG=0
+
+IF EXECUTE.DEBUG THEN
+    CRT "EXECUTE.COMMAND: ":EXECUTE.COMMAND
+    CRT "DIRECTORY      : ":EXECUTE.DIRECTORY
+    CRT "OCAPTURE       : ":EXECUTE.OCAPTURE
+    CRT "RETURNING      : ":EXECUTE.RETURNING
+END
+
 
 * ERROR HANDLING TODO
 
