@@ -14,8 +14,7 @@
       *
       * {
       *   "platform":" WINDOWS OR LINUX",
-      *   "mvtype"  :" JBASE, D3, UNIDATA, UNIVERSE, OPENQM",
-      *   "filedelim": "delimiter used between file names, usually \ or /"
+      *   "mvtype"  :" JBASE, D3, UNIDATA, UNIVERSE, OPENQM"
       * }
 
       OPEN "MD" TO FI.MD ELSE
@@ -25,9 +24,17 @@
       READ PLATFORMOBJ.JSON FROM FI.MD, "MVDBTOOLKIT.PLATFORM.JSON" ELSE
          CALL WOBJ(PLATFORMOBJ,"FROMSTRING","","{}","",RERR)
          CALL WOBJ(PLATFORMOBJ,"SET.STRING","error","No MVDBTOOLKIT.PLATFORM.JSON IN MD/VOC","",RERR)
+         CRT "No MVDBTOOLKIT.PLATFORM.JSON IN MD"
          RETURN
       END
 
       CALL MVDBTOOLKIT.WOBJ(PLATFORMOBJ,"FROMSTRING","",PLATFORMOBJ.JSON,"",RERR)
+      
+      * 9/2/2019 PAP - We now figure out filedelim vs passing it in original config filedelim
+      
+      CALL MVDBTOOLKIT.WOBJ(PLATFORMOBJ.JSON,"GET","platform",PLATFORM,"",RERR)
+      IF PLATFORM="WINDOWS" THEN DELIM = "\" ELSE DELIM = "/"
+      CALL MVDBTOOLKIT.WOBJ(PLATFORMOBJ.JSON,"SET","filedelim",DELIM,"",RERR)
+
 
       RETURN

@@ -1,7 +1,7 @@
 WOBJ.RTNE="MVDBTOOLKIT.WOBJ"
  CALL @WOBJ.RTNE(OBJ,"FROMSTRING","","{}","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","method","GET","",RERR)
- CALL @WOBJ.RTNE(OBJ,"SET","url","https://www.google.com","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","url","https://raw.githubusercontent.com/patrickp/mvdbtoolkit/master/MVDBTOOLKIT.txt","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","insecure","Y","",RERR)
  CALL MVDBTOOLKIT.WCALL(OBJ)
  CALL @WOBJ.RTNE(OBJ,"GET","response.data",RESPONSE,"",RERR)

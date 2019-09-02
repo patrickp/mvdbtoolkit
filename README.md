@@ -13,7 +13,6 @@ This was faster/easier than detecting.  This could be improved in the future to 
 MD/VOC MVDBTOOLKIT.PLATFORM.JSON
 <pre>
 { "mvtype": "D3,JBASE",
-  "filedelim": "\ or /",
   "platform": "WINDOWS or LINUX"
 }
 </pre>
@@ -23,19 +22,19 @@ MD/VOC MVDBTOOLKIT.PLATFORM.JSON
 This is for handing calling O/S commands.  It is passed a object and returns a object
 
 <pre>
-{ "COMMAND":"COMMAND TO USE",
-    "DIRECTORY":"OPTIONAL DIRECTORY TO RUN IN",
-    "DEBUG":"YES OR NO",
-    "DOCAPTURE":"YES OR NO, DEFAULT YES",
-    "RETURNING":"YES OR NO, DEFAULT YES",
-    "RTNDATA":"YES OR NO, DEFAULT NO",
-    "PASSLIST":"ACTUAL PASSLIST"
-    "DATA": ["ARRAY OF DATA STATEMENTS"],
-    "RESULT: {
-                "RESULT":"RESULT IF CAPTURED",
-                "RTNDATA":"RESULT OF RTNDATA",
-                "RETURNING":"RESULT OF RETURNING",
-                "DEBUG":"DEBUG INFORMATION IF TURNED ON"
+{ "command":"COMMAND TO USE",
+    "directory":"OPTIONAL DIRECTORY TO RUN IN",
+    "debug":"YES OR NO",
+    "docapture":"YES OR NO, DEFAULT YES",
+    "returning":"YES OR NO, DEFAULT YES",
+    "rtndata":"YES OR NO, DEFAULT NO",
+    "passlist":"ACTUAL PASSLIST"
+    "data": ["ARRAY OF DATA STATEMENTS"],
+    "result: {
+                "result":"RESULT IF CAPTURED",
+                "rtndata":"RESULT OF RTNDATA",
+                "returning":"RESULT OF RETURNING",
+                "debug":"DEBUG INFORMATION IF TURNED ON"
     }
     }
 </pre>
@@ -43,6 +42,19 @@ This is for handing calling O/S commands.  It is passed a object and returns a o
 CALL MVDBTOOLKIT.EXECUTE(OBJ)
 
 There are actually seperate routines for the different platforms.  
+
+#### MV Platform Implementations
+
+A unique routine exists for each platform
+
+|  Feature   | jBase    |  D3   |   Universe   |  Unidata  |   OpenQM       |
+| Built      |   Yes    |  No   |     No       |    No     |     No         |
+| returning  |   No     |  No   |     No       |    No     |     No         |
+| rtndata    |   No     |  No   |     No       |    No     |     No         |
+| passlist   |   No     |  No   |     No       |    No     |     No         |
+| data       |   Yes    |  No   |     No       |    No     |     No         |
+| debug      |   Yes    |  No   |     No       |    No     |     No         |
+
 
 ### WFILEIO
 
