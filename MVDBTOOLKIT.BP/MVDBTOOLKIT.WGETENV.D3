@@ -1,0 +1,22 @@
+SUBROUTINE MVDBTOOLKIT.WGETENV.D3(VAR.NAME, RETURN.VALUE)
+
+RETURN.VALUE=""
+
+* Gets and displays the PATH environment variable
+cfunction unix.builtin
+pointer=(char*)%getenv(VAR.NAME)
+
+if pointer = 0 then
+   RETURN.VALUE=""
+end else
+* We got a C pointer the path variable. Copy it
+* into pick variable
+   char path[1024]
+   %strcpy(path, (char*)pointer)
+   path = field(path,char(0),1)
+   RETURN.VALUE=path
+end
+
+RETURN
+
+

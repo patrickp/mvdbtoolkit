@@ -1,0 +1,116 @@
+SUBROUTINE MVDBTOOLKIT.WFILEIO.D3(FOBJ)
+**********************************************************************
+*
+* Copyright (C) 2017 Zumasys, Inc., All Rights Reserved
+*
+* Written by: Patrick Payne, Zumasys
+* Date: June 7th 2018
+* Description: WFILEIO MULTI PLATFORM WORKING WITH O/S FILES
+*
+**********************************************************************
+*
+* INOBJ
+*
+* { "ACTION":"READ,WRTE,DELETE",
+*   "PATH":"PATH TO THE FILE",
+*   "DATA":"DATA FOR A WRITE",
+*   "dosletter":"OPTIONAL DOS LETTER TO ADD TO PATH",
+*   "NEWLINE":"CR,LF,CRLF,DOS,UNIX",
+*   "PERMISSIONS":"TBD"
+*   "response": {
+*       "data":"responsedata",
+*       "status":1-ok, else no,
+*       "statusmsg":"statusmsg" 
+*   }
+* }
+*
+* need to know the existing platform
+
+*PLATFORM.DELIM="\"
+*PLATFORM.TYPE="WINDOWS"
+*PLATFORM.MV="D3"
+
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","work.mvtype",PLATFORM.MV,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","work.filedelim",PLATFORM.DELIM,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","work.platform",PLATFORM.TYPE,"",RERR)
+
+FSTATUS=1
+FSTATUSMSG="OK"
+
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","action",FILEIO.ACTION,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","path",FILEIO.PATH,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","data",FILEIO.DATA,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","dosletter",FILEIO.DOSLETTER,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","newline",FILEIO.NEWLINE,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","permissions",FILEIO.PERMISSIONS,"",RERR)
+
+*CALL MVDBTOOLKIT.WOBJ(OUTOBJ,"FROMSTRING","","{}","",RERR)
+
+FILEIO.ACTION=OCONV(FILEIO.ACTION,"MCU")
+FILEIO.NEWLINE=OCONV(FILEIO.NEWLINE,"MCU")
+
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","work.parsed_fileio_file_name",PARSED.FILEIO.FILE.NAME,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","work.fileio_just_path",FILEIO.JUST.PATH,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","work.platform",PLATFORM.TYPE,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","work.mvtype",PLATFORM.MVTYPE,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","work.filedelim",PLATFORM.FILEDELIM,"",RERR)
+
+* FOR RIGHT NOW ON JBASE WE WILL JUST OPEN THE FILE USING FULL PATHING
+
+BEGIN CASE
+   CASE PLATFORM.TYPE="WINDOWS"
+      REAL.PATH="dos:":PLATFORM.TYPE
+   CASE 1
+      REAL.PATH="unix:":PLATFORM.TYPE
+END CASE
+
+OPEN FILEIO.JUST.PATH TO FI ELSE
+    FSTATUS=0
+    FSTATUSMSG="Could not open file ":FILEIO.JUST.PATH
+    GOTO end.of.run
+END
+
+BEGIN CASE
+    CASE FILEIO.ACTION="READ"
+        GOSUB fileio.read
+    CASE FILEIO.ACTION="WRITE"
+        GOSUB fileio.write
+    CASE FILEIO.ACTION="DELETE"
+        GOSUB fileio.delete
+    CASE 1
+        FSTATUS=0
+        FSTATUSMSG="Invalid action"
+        GOTO end.of.run
+END CASE
+
+end.of.run: *
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET.NUMBER", "response.status", FSTATUS,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET.STRING", "response.statusmsg", FSTATUSMSG, "", RERR)
+
+RETURN
+
+fileio.read: *
+
+READ REC FROM FI, PARSED.FILEIO.FILE.NAME ELSE
+    FSTATUS=0
+    FSTATUSMSG="Could not find ":PARSED.FILEIO.FILE.NAME
+END
+
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET.STRING","response.data",REC,"",RERR)
+
+IF 0 THEN
+    PRINT "PATH   :":FILEIO.JUST.PATH
+    PRINT "ID     :":PARSED.FILEIO.FILE.NAME
+    PRINT "REC    :":REC
+END
+
+RETURN
+
+fileio.write: *
+
+WRITE FILEIO.DATA ON FI, PARSED.FILEIO.FILE.NAME
+
+RETURN
+
+fileio.delete: *
+RETURN
