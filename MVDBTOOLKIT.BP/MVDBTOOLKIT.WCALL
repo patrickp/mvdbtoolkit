@@ -15,7 +15,8 @@
       *    "headers": { "HEADERNAME":"VALUE", "HEADERNAME":"VALUE" },
       *    "body":"BODY",
       *    "insecure":"Yes,Y,YES - Sets the -k on curl",
-      *    "timeout": ## (default is 45)
+      *    "timeout": ## (default is 45),
+      *    "options":"options to add to curl command",
       *    "response": {
       *        "result":"RESULT",
       *        "status":"STATUS",
