@@ -90,6 +90,7 @@ This is a front end to curl.  It is passed a object for options
 *    "headers": { "HEADERNAME":"VALUE", "HEADERNAME":"VALUE" },
 *    "body":"BODY",
 *    "insecure":"Yes,Y,YES - Sets the -k on curl",
+*    "options":"curl options to add to curl command",
 *    "timeout": ## (default is 45)
 *    "response": {
 *        "data":"RESULT",
