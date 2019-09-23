@@ -68,6 +68,10 @@
       CMND="curl -s"
       CMND:=' -m ':WEB.TIMEOUT
       CMND:=' -X ':WEB.METHOD
+      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"KEYS","options",WEB.OPTIONS,"",RERR)
+      IF WEB.OPTIONS # "" THEN
+            CMND:=' ':WEB.OPTIONS
+      END
 
       WEB.NUM.HEADERS=DCOUNT(WEB.HEADERS,@SVM)
 
