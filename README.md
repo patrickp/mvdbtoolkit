@@ -95,7 +95,12 @@ This is a front end to curl.  It is passed a object for options
 *    "response": {
 *        "data":"RESULT",
 *        "status":"STATUS",
-*        "curl_cmnd":"Actual curl command created"
+*        "curl_cmnd":"Actual curl command created",
+*        "status": status code,
+*        "statusmsg": "status msg",
+*        "http_type": "http type",
+*        "headers": { "header1name":"header1value, "header2name":"header2value" },
+*        "log": [ "log line1", "log line2" ]
 *    }
 *  }
 </pre>
