@@ -25,7 +25,7 @@ SUBROUTINE MVDBTOOLKIT.WCALL(MVDBTOOLKIT.WOBJ)
 *        "curl_cmnd":"Actual curl command created",
 *         "error": "error",
 *         "log": [ "log output line1", "log output line 2" ],
-"        "headers": { "headername":"header value","headername2":"headervalue" }
+*        "headers": { "headername":"header value","headername2":"headervalue" }
 *    }
 *  }
 

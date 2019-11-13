@@ -14,7 +14,8 @@
       *
       * {
       *   "platform":" WINDOWS OR LINUX",
-      *   "mvtype"  :" JBASE, D3, UNIDATA, UNIVERSE, OPENQM"
+      *   "mvtype"  :" JBASE, D3, UNIDATA, UNIVERSE, OPENQM",
+      *   "tmpdir"  :"tmp dir"
       * }
 
       OPEN "MD" TO FI.MD ELSE
@@ -35,6 +36,25 @@
       CALL MVDBTOOLKIT.WOBJ(PLATFORMOBJ.JSON,"GET","platform",PLATFORM,"",RERR)
       IF PLATFORM="WINDOWS" THEN DELIM = "\" ELSE DELIM = "/"
       CALL MVDBTOOLKIT.WOBJ(PLATFORMOBJ,"SET","filedelim",DELIM,"",RERR)
+
+      CALL MVDBTOOLKIT.WOBJ(PLATFORMOBJ,"GET","tmpdir",TMP.DIR,"",RERR)
+
+      * 11/10/2019 - Added default tmp dir, pulled from wcall function
+      
+      IF TMP.DIR="" THEN
+            BEGIN CASE
+                  CASE PLATFORM="LINUX"
+                  TMP.DIR="/tmp"
+                  CASE INDEX(PLATFORM,"WINDOWS",1) AND MV.TYPE="JBASE"
+                  TMP.DIR="%HOME%"
+                  CASE INDEX(PLATFORM,"WINDOWS",1)
+                  TMP.DIR="%USERPROFILE%\AppData\Local\Temp"
+                  CASE 1
+                  TMP.DIR="/tmp"
+            END CASE
+            CALL MVDBTOOLKIT.WOBJ(PLATFORMOBJ,"SET","tmpdir",TMP.DIR,"",RERR)
+      END
+
 
 
       RETURN
