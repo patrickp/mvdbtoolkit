@@ -23,7 +23,8 @@
       *     ],
       *
       *    "insecure":"Yes,Y,YES - Sets the -k on curl",
-      *    "timeout": ## (default is 45)
+      *    "timeout": ## (default is 45),
+      *    "debug":"Y or N",
       *    "response": {
       *        "result":"RESULT",
       *        "status":"STATUS",
@@ -48,6 +49,8 @@
 
       CALL MVDBTOOLKIT.WOBJ(POBJ,"GET","tmpdir",TMP.DIR,"",RERR)
 
+      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","debug",DO.DEBUG,"",RERR)
+      IF OCONV(DO.DEBUG[1,1],"MCU")="Y" OR DO.DEBUG="1" THEN DO.DEBUG=1 ELSE DO.DEBUG=""
       CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","method",WEB.METHOD,"",RERR)
       CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","url",WEB.URL,"",RERR)
       CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","body",WEB.BODY,"",RERR)
@@ -144,12 +147,15 @@
       EOBJ="NEW"
       CALL MVDBTOOLKIT.WEXECUTE(EOBJ); * INITIATES OUR OBJECT
       CALL MVDBTOOLKIT.WOBJ(EOBJ,"SET","command",CMND,"",RERR)
+      CALL MVDBTOOLKIT.WOBJ(EOBJ,"SET","debug",DO.DEBUG,"",RERR); * LAY IN DEBUGGING PARAM
       IF WEB.BODY # "" THEN
          * CALL MVDBTOOLKIT.WOBJ(EOBJ,"SET","data[0]",WEB.BODY,"",RERR)
       END
 
       CALL MVDBTOOLKIT.WEXECUTE(EOBJ); * DO THE CALL
 
+      * READ IN THE HEADERS
+      
       CALL MVDBTOOLKIT.WOBJ(FOBJ,"FROMSTRING","","{}","",RERR)
       CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","action","READ","",RERR)
       CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","path",TMP.DIR:SESSION.ID:".headers","",RERR)
@@ -157,12 +163,25 @@
       CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","response.data",RESPONSE.HEADERS,"",RERR)
       CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.STRING","response.headers",RESPONSE.HEADERS,"",RERR)
 
+     IF NOT(DO.DEBUG) THEN
+         * DELETE THE FILE
+         CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","action","DELETE","",RERR)
+         CALL MVDBTOOLKIT.WFILEIO(FOBJ)
+      END
+
+      * NOW READ IN THE STDERR
+      
       CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","path",TMP.DIR:SESSION.ID:'.stderr',"",RERR)
-
       CALL MVDBTOOLKIT.WFILEIO(FOBJ)
-
       CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","response.data",RESPONSE.STDERR,"",RERR)
       CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.STRING","response.stderr",RESPONSE.STDERR,"",RERR)
+
+      IF NOT(DO.DEBUG) THEN
+         * DELETE THE FILE
+         CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","action","DELETE","",RERR)
+         CALL MVDBTOOLKIT.WFILEIO(FOBJ)
+      END
+
 
       * NEED TO GET FIRST < LINE AND PROCESS HTTP/1.1 200 OK
       LINE.CNTR=0
