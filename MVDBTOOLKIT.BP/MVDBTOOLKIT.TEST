@@ -51,6 +51,7 @@ TEST="WCALL.RESPONSECODE"
 GOSUB start.test
 
 CALL @WOBJ.RTNE(OBJ,"FROMSTRING","","{}","",RERR)
+
  CALL @WOBJ.RTNE(OBJ,"SET","method","POST","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","debug","N","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","url","https://httpbin.org/anything?field1=value1","",RERR)
@@ -63,7 +64,7 @@ CALL @WOBJ.RTNE(OBJ,"FROMSTRING","","{}","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET.OBJECT","formfields[-1]","{}","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","formfields[0].name","field2","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","formfields[0].value","VALUE2$","",RERR)
- 
+
  CALL @WOBJ.RTNE(SOBJ,"FROMSTRING","","{}","",RERR)
  CALL @WOBJ.RTNE(SOBJ,"SET","name","field3","",RERR)
  CALL @WOBJ.RTNE(SOBJ,"SET","value","<EXAMPLE HTML>","",RERR)
@@ -141,7 +142,7 @@ CALL @WOBJ.RTNE(OBJ,"FROMSTRING","","{}","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","method","POST","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","debug","N","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","url","https://httpbin.org/anything?field1=value1","",RERR)
- CALL @WOBJ.RTNE(OBJ,"SET","insecure","Y","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","insecure","N","",RERR)
 
  CALL @WOBJ.RTNE(OBJ,"SET.OBJECT","headers","{}","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","Content-Type","application/json","",RERR)

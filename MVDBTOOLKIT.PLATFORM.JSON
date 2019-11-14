@@ -1,5 +1,10 @@
 {
 "mvtype":"JBASE",
 "filedelim":"/",
+"platform":"WINDOWS"
+}
+{
+"mvtype":"JBASE",
+"filedelim":"/",
 "platform":"LINUX"
 }
