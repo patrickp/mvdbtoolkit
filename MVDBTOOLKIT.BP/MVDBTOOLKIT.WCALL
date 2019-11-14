@@ -1,212 +1,253 @@
-      SUBROUTINE MVDBTOOLKIT.WCALL(MVDBTOOLKIT.WOBJ)
-      **********************************************************************
-      *
-      * Copyright (C) 2018 Zumasys, Inc., All Rights Reserved
-      *
-      * Written by: Patrick Payne, Zumasys
-      * Date: June 15, 2018
-      * Description: WCALL Library
+SUBROUTINE MVDBTOOLKIT.WCALL(MVDBTOOLKIT.WOBJ)
+**********************************************************************
+*
+* Copyright (C) 2018 Zumasys, Inc., All Rights Reserved
+*
+* Written by: Patrick Payne, Zumasys
+* Date: June 15, 2018
+* Description: WCALL Library
 
-      **********************************************************************
-      *
-      * MVDBTOOLKIT.WOBJ
-      * { "method":"GET,PUT,POST,ETC",
-      *    "url":"URL TO CALL",
-      *    "headers": { "HEADERNAME":"VALUE", "HEADERNAME":"VALUE" },
-      *    "body":"BODY",
-      *    "formfields": [
-      *         {
-      *            "name":"field name",
-      *            "value":"field value",
-      *            "fieldtype":"blank or file" for now
-      *         }
-      *     ],
-      *
-      *    "insecure":"Yes,Y,YES - Sets the -k on curl",
-      *    "timeout": ## (default is 45),
-      *    "debug":"Y or N",
-      *    "response": {
-      *        "result":"RESULT",
-      *        "status":"STATUS",
-      *        "http_type": "http type",
-      *        "curl_cmnd":"Actual curl command created",
-      *         "error": "error"
-      *    }
-      *  }
+**********************************************************************
+*
+* MVDBTOOLKIT.WOBJ
+* { "method":"GET,PUT,POST,ETC",
+*    "url":"URL TO CALL",
+*    "headers": { "HEADERNAME":"VALUE", "HEADERNAME":"VALUE" },
+*    "body":"BODY",
+*    "formfields": [
+*         {
+*            "name":"field name",
+*            "value":"field value",
+*            "fieldtype":"blank or file" for now
+*         }
+*     ],
+*
+*    "insecure":"Yes,Y,YES - Sets the -k on curl",
+*    "timeout": ## (default is 45),
+*    "options":"options to add to curl command",
+*    "debug":"Y or N",
+*    "response": {
+*        "result":"RESULT",
+*        "status":"STATUS",
+*        "statusmsg":"STATUS MSG",
+*        "http_type": "http type",
+*        "curl_cmnd":"Actual curl command created",
+*         "error": "error",
+*         "log": [ "log output line1", "log output line 2" ],
+*        "headers": { "headername":"header value","headername2":"headervalue" }
+*    }
+*  }
 
-      CALL MVDBTOOLKIT.WPLATFORM(POBJ)
+CALL MVDBTOOLKIT.WPLATFORM(POBJ)
 
-      CALL MVDBTOOLKIT.WOBJ(POBJ,"GET","mvtype",MV.TYPE,"",RERR)
-      CALL MVDBTOOLKIT.WOBJ(POBJ,"GET","platform",PLATFORM,"",RERR)
-      CALL MVDBTOOLKIT.WOBJ(POBJ,"GET","filedelim",FILE.DELIM,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(POBJ,"GET","mvtype",MV.TYPE,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(POBJ,"GET","platform",PLATFORM,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(POBJ,"GET","filedelim",FILE.DELIM,"",RERR)
 
-      IF MV.TYPE="" THEN
-         CALL MVDBTOOLKIT.WOBJ(POBJ,"GET","error",THIS.ERROR,"",RERR)
-         PRINT "NO MV TYPE: ":THIS.ERROR
-         RETURN
+IF MV.TYPE="" THEN
+   CALL MVDBTOOLKIT.WOBJ(POBJ,"GET","error",THIS.ERROR,"",RERR)
+   PRINT "NO MV TYPE: ":THIS.ERROR
+   RETURN
+END
+
+
+CALL MVDBTOOLKIT.WOBJ(POBJ,"GET","tmpdir",TMP.DIR,"",RERR)
+
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","debug",DO.DEBUG,"",RERR)
+IF OCONV(DO.DEBUG[1,1],"MCU")="Y" OR DO.DEBUG="1" THEN DO.DEBUG=1 ELSE DO.DEBUG=""
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","method",WEB.METHOD,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","url",WEB.URL,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","body",WEB.BODY,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","timeout",WEB.TIMEOUT,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"KEYS","headers",WEB.HEADERS,"",RERR)
+IF NOT(WEB.TIMEOUT) THEN WEB.TIMEOUT=45
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","insecure",WEB.INSECURE,"",RERR)
+IF OCONV(WEB.INSECURE[1,1],'MCU') = "Y" THEN WEB.INSECURE=1 ELSE WEB.INSECURE=0
+
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.OBJECT","response","{}","",RERR)
+
+IF TMP.DIR="" THEN
+ BEGIN CASE
+    CASE PLATFORM="LINUX"
+       TMP.DIR="/tmp"
+    CASE INDEX(PLATFORM,"WINDOWS",1) AND MV.TYPE="JBASE"
+       TMP.DIR="%HOME%"
+    CASE INDEX(PLATFORM,"WINDOWS",1)
+       TMP.DIR="%USERPROFILE%\AppData\Local\Temp"
+    CASE 1
+       TMP.DIR="/tmp"
+ END CASE
+END
+
+CMND="curl -s"
+CMND:=' -m ':WEB.TIMEOUT
+CMND:=' -X ':WEB.METHOD
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"KEYS","options",WEB.OPTIONS,"",RERR)
+IF WEB.OPTIONS # "" THEN
+   CMND:=' ':WEB.OPTIONS
+END
+
+WEB.NUM.HEADERS=DCOUNT(WEB.HEADERS,@SVM)
+
+FOR H=1 TO WEB.NUM.HEADERS
+   HEADER.NAME=WEB.HEADERS<1,1,H>
+   CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","headers.":HEADER.NAME,HEADER.VALUE,"",RERR)
+   CALL MVDBTOOLKIT.WOBJ.ENCODE(HEADER.VALUE,ENCODED.HEADER.VALUE)
+   CMND:=' -H "':HEADER.NAME:': ':ENCODED.HEADER.VALUE:'"'
+NEXT H
+
+SESSION.ID="WCALL-":@USER.NO
+TMP.DIR:=FILE.DELIM
+
+* add in dumping of headers
+CMND:=" -D ":TMP.DIR:SESSION.ID:".headers"
+
+* write out stderr
+CMND:=" -v --stderr ":TMP.DIR:SESSION.ID:".stderr"
+
+IF WEB.BODY # "" THEN
+   *CALL MVDBTOOLKIT.WOBJ(EOBJ,"SET.ARRAY","data","[]","",RERR)
+   *CALL MVDBTOOLKIT.WOBJ(EOBJ,"SET.STRING","data[0]",WEB.BODY,"",RERR)
+
+
+   CALL MVDBTOOLKIT.WOBJ(FOBJ,"FROMSTRING","","{}","",RERR)
+   CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","action","WRITE","",RERR)
+   CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","data",WEB.BODY,"",RERR)
+   CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","path",TMP.DIR:SESSION.ID:'.body',"",RERR)
+
+   CALL MVDBTOOLKIT.WFILEIO(FOBJ)
+   CMND:=' --data-binary @':TMP.DIR:SESSION.ID:'.body'
+   *CMND:='  --data-binary @-'
+END
+
+* form fields *
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"LENGTH","formfields",NUM.FORMFIELDS,"",RERR)
+
+FOR X=1 TO NUM.FORMFIELDS
+ P="formfields[":X-1:"]"
+ CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET",P:'.name',FIELD.NAME,"",RERR)
+ CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET",P:'.value',FIELD.VALUE,"",RERR)
+ CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET",P:'.fieldtype',FIELD.TYPE,"",RERR)
+ IF TRIM(FIELD.NAME) # "" THEN
+    * < > @ ALL MEAN SPECIAL THINGS WITH A -F.  If that exists in the file you need
+    * to use --form-string
+    IF INDEX(FIELD.VALUE,'<',1) OR INDEX(FIELD.VALUE,'>',1) OR INDEX(FIELD.VALUE,'@',1) OR INDEX(FIELD.VALUE,'$',1) AND FIELD.TYPE # "file" THEN
+       TMP.CMND="--form-string "
+    END ELSE
+       TMP.CMND="-F "
+    END
+    TMP.CMND:=FIELD.NAME:'="'
+    TMP.CMND:=FIELD.VALUE:'"'
+    CMND:=' ':TMP.CMND
+ END
+NEXT X
+
+* NOW ADD THE URL
+
+WEB.URL=SWAP(WEB.URL,' ','%20'); * needs to be EXCHANGE FOR UNIVERSE!!!
+WEB.URL=SWAP(WEB.URL,'@','%40')
+WEB.URL=SWAP(WEB.URL,'$','%24')
+*WEB.URL=SWAP(WEB.URL,'/','%2F')
+
+CMND:=' "':WEB.URL:'"'
+
+* CALL WEXECUTE
+EOBJ="NEW"
+CALL MVDBTOOLKIT.WEXECUTE(EOBJ); * INITIATES OUR OBJECT
+CALL MVDBTOOLKIT.WOBJ(EOBJ,"SET","command",CMND,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(EOBJ,"SET","debug",DO.DEBUG,"",RERR); * LAY IN DEBUGGING PARAM
+IF WEB.BODY # "" THEN
+   * CALL MVDBTOOLKIT.WOBJ(EOBJ,"SET","data[0]",WEB.BODY,"",RERR)
+END
+
+CALL MVDBTOOLKIT.WEXECUTE(EOBJ); * DO THE CALL
+
+* READ IN THE HEADERS
+
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"FROMSTRING","","{}","",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","action","READ","",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","path",TMP.DIR:SESSION.ID:".headers","",RERR)
+CALL MVDBTOOLKIT.WFILEIO(FOBJ)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","response.data",RESPONSE.HEADERS,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.STRING","response.headers",RESPONSE.HEADERS,"",RERR)
+
+* Lets break the headers down into an array
+
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.OBJECT","response.headers","{}","",RERR)
+
+NUM.HEADERS=DCOUNT(RESPONSE.HEADERS,@AM)
+
+HTTP.TYPE=''; HTTP.STATUS.CODE=''; HTTP.MSG=''
+
+FOR H=1 TO NUM.HEADERS
+   HEADER.LINE=RESPONSE.HEADERS<H>
+
+   IF H=1 THEN
+      HTTP.TYPE=FIELD(HEADER.LINE,' ',1)
+      HTTP.STATUS.CODE=FIELD(HEADER.LINE,' ',2)
+      HTTP.STATUS.MSG=FIELD(HEADER.LINE,' ',3,99)
+   END ELSE
+      HEADER.NAME=TRIM(FIELD(HEADER.LINE,':',1))
+      CONVERT CHAR(13):CHAR(10) TO '' IN HEADER.NAME; * CATCHES BLANK LINES
+      HEADER.VALUE=FIELD(HEADER.LINE,':',2,999999)
+      IF  HEADER.VALUE[1,1]=' ' THEN HEADER.VALUE=HEADER.VALUE[2,LEN(HEADER.VALUE)]; * messy left trim
+      CONVERT CHAR(13):CHAR(10) TO '' IN HEADER.VALUE; * STRIP AN NEW LINES
+      IF HEADER.NAME # "" THEN
+         * NOW PUT THE HEADER INTO OUR ARRAY
+         CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.STRING","response.headers.":HEADER.NAME,HEADER.VALUE,"",RERR)
       END
+   END
+NEXT H
+
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.NUMBER","response.status",HTTP.STATUS.CODE,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.STRING","response.http_type",HTTP.TYPE,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.STRING","response.statusmsg",HTTP.STATUS.MSG,"",RERR)
 
 
-      CALL MVDBTOOLKIT.WOBJ(POBJ,"GET","tmpdir",TMP.DIR,"",RERR)
+IF NOT(DO.DEBUG) THEN
+ * DELETE THE FILE
+ CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","action","DELETE","",RERR)
+END
 
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","debug",DO.DEBUG,"",RERR)
-      IF OCONV(DO.DEBUG[1,1],"MCU")="Y" OR DO.DEBUG="1" THEN DO.DEBUG=1 ELSE DO.DEBUG=""
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","method",WEB.METHOD,"",RERR)
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","url",WEB.URL,"",RERR)
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","body",WEB.BODY,"",RERR)
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","timeout",WEB.TIMEOUT,"",RERR)
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"KEYS","headers",WEB.HEADERS,"",RERR)
-      IF NOT(WEB.TIMEOUT) THEN WEB.TIMEOUT=45
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","insecure",WEB.INSECURE,"",RERR)
-      IF OCONV(WEB.INSECURE[1,1],'MCU') = "Y" THEN WEB.INSECURE=1 ELSE WEB.INSECURE=0
+* READ IN STDERR (LOG) AND POST AS A ARRAY
 
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.OBJECT","response","{}","",RERR)
+CALL MVDBTOOLKIT.WFILEIO(FOBJ)
 
-      IF TMP.DIR="" THEN
-         BEGIN CASE
-            CASE PLATFORM="LINUX"
-               TMP.DIR="/tmp"
-            CASE INDEX(PLATFORM,"WINDOWS",1) AND MV.TYPE="JBASE"
-               TMP.DIR="%HOME%"
-            CASE INDEX(PLATFORM,"WINDOWS",1)
-               TMP.DIR="%USERPROFILE%\AppData\Local\Temp"
-            CASE 1
-               TMP.DIR="/tmp"
-         END CASE
-      END
-
-      CMND="curl -s"
-      CMND:=' -m ':WEB.TIMEOUT
-      CMND:=' -X ':WEB.METHOD
-
-      WEB.NUM.HEADERS=DCOUNT(WEB.HEADERS,@SVM)
-
-      FOR H=1 TO WEB.NUM.HEADERS
-         HEADER.NAME=WEB.HEADERS<1,1,H>
-         CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET","headers.":HEADER.NAME,HEADER.VALUE,"",RERR)
-         CALL MVDBTOOLKIT.WOBJ.ENCODE(HEADER.VALUE,ENCODED.HEADER.VALUE)
-         CMND:=' -H "':HEADER.NAME:': ':ENCODED.HEADER.VALUE:'"'
-      NEXT H
-
-      SESSION.ID="WCALL-":@USER.NO
-      TMP.DIR:=FILE.DELIM
-
-      * add in dumping of headers
-      CMND:=" -D ":TMP.DIR:SESSION.ID:".headers"
-
-      * write out stderr
-      CMND:=" -v --stderr ":TMP.DIR:SESSION.ID:".stderr"
-
-      IF WEB.BODY # "" THEN
-         *CALL MVDBTOOLKIT.WOBJ(EOBJ,"SET.ARRAY","data","[]","",RERR)
-         *CALL MVDBTOOLKIT.WOBJ(EOBJ,"SET.STRING","data[0]",WEB.BODY,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","path",TMP.DIR:SESSION.ID:'.stderr',"",RERR)
+CALL MVDBTOOLKIT.WFILEIO(FOBJ)
+CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","response.data",RESPONSE.STDERR,"",RERR)
+IF NOT(DO.DEBUG) THEN
+ * DELETE THE FILE
+ CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","action","DELETE","",RERR)
+ CALL MVDBTOOLKIT.WFILEIO(FOBJ)
+END
 
 
-         CALL MVDBTOOLKIT.WOBJ(FOBJ,"FROMSTRING","","{}","",RERR)
-         CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","action","WRITE","",RERR)
-         CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","data",WEB.BODY,"",RERR)
-         CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","path",TMP.DIR:SESSION.ID:'.body',"",RERR)
-
-         CALL MVDBTOOLKIT.WFILEIO(FOBJ)
-         CMND:=' --data-binary @':TMP.DIR:SESSION.ID:'.body'
-         *CMND:='  --data-binary @-'
-      END
-
-      * form fields *
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"LENGTH","formfields",NUM.FORMFIELDS,"",RERR)
-
-      FOR X=1 TO NUM.FORMFIELDS
-         P="formfields[":X-1:"]"
-         CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET",P:'.name',FIELD.NAME,"",RERR)
-         CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET",P:'.value',FIELD.VALUE,"",RERR)
-         CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET",P:'.fieldtype',FIELD.TYPE,"",RERR)
-         IF TRIM(FIELD.NAME) # "" THEN
-            * < > @ ALL MEAN SPECIAL THINGS WITH A -F.  If that exists in the file you need
-            * to use --form-string
-            IF INDEX(FIELD.VALUE,'<',1) OR INDEX(FIELD.VALUE,'>',1) OR INDEX(FIELD.VALUE,'@',1) OR INDEX(FIELD.VALUE,'$',1) AND FIELD.TYPE # "file" THEN
-               TMP.CMND="--form-string "
-            END ELSE
-               TMP.CMND="-F "
-            END
-            TMP.CMND:=FIELD.NAME:'="'
-            TMP.CMND:=FIELD.VALUE:'"'
-            CMND:=' ':TMP.CMND
-         END
-      NEXT X
-
-      * NOW ADD THE URL
-
-      WEB.URL=EXCHANGE(WEB.URL,' ','%20')
-      WEB.URL=EXCHANGE(WEB.URL,'@','%40')
-      WEB.URL=EXCHANGE(WEB.URL,'$','%24')
-      *WEB.URL=EXCHANGE(WEB.URL,'/','%2F')
-
-      CMND:=' "':WEB.URL:'"'
-
-      * CALL WEXECUTE
-      EOBJ="NEW"
-      CALL MVDBTOOLKIT.WEXECUTE(EOBJ); * INITIATES OUR OBJECT
-      CALL MVDBTOOLKIT.WOBJ(EOBJ,"SET","command",CMND,"",RERR)
-      CALL MVDBTOOLKIT.WOBJ(EOBJ,"SET","debug",DO.DEBUG,"",RERR); * LAY IN DEBUGGING PARAM
-      IF WEB.BODY # "" THEN
-         * CALL MVDBTOOLKIT.WOBJ(EOBJ,"SET","data[0]",WEB.BODY,"",RERR)
-      END
-
-      CALL MVDBTOOLKIT.WEXECUTE(EOBJ); * DO THE CALL
-
-      * READ IN THE HEADERS
-      
-      CALL MVDBTOOLKIT.WOBJ(FOBJ,"FROMSTRING","","{}","",RERR)
-      CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","action","READ","",RERR)
-      CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","path",TMP.DIR:SESSION.ID:".headers","",RERR)
-      CALL MVDBTOOLKIT.WFILEIO(FOBJ)
-      CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","response.data",RESPONSE.HEADERS,"",RERR)
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.STRING","response.headers",RESPONSE.HEADERS,"",RERR)
-
-     IF NOT(DO.DEBUG) THEN
-         * DELETE THE FILE
-         CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","action","DELETE","",RERR)
-         CALL MVDBTOOLKIT.WFILEIO(FOBJ)
-      END
-
-      * NOW READ IN THE STDERR
-      
-      CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","path",TMP.DIR:SESSION.ID:'.stderr',"",RERR)
-      CALL MVDBTOOLKIT.WFILEIO(FOBJ)
-      CALL MVDBTOOLKIT.WOBJ(FOBJ,"GET","response.data",RESPONSE.STDERR,"",RERR)
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.STRING","response.stderr",RESPONSE.STDERR,"",RERR)
-
-      IF NOT(DO.DEBUG) THEN
-         * DELETE THE FILE
-         CALL MVDBTOOLKIT.WOBJ(FOBJ,"SET","action","DELETE","",RERR)
-         CALL MVDBTOOLKIT.WFILEIO(FOBJ)
-      END
 
 
-      * NEED TO GET FIRST < LINE AND PROCESS HTTP/1.1 200 OK
-      LINE.CNTR=0
-      NUM.LINES=DCOUNT(RESPONSE.STDERR,@AM)
-      HTTP.TYPE=''; HTTP.STATUS.CODE=''
 
-      LOOP
-         LINE.CNTR+=1
-         LINE=RESPONSE.STDERR<LINE.CNTR>
-         IF LINE[1,1]='<' THEN
-            HTTP.TYPE=FIELD(LINE,' ',2)
-            HTTP.STATUS.CODE=FIELD(LINE,' ',3)
-         END
-      UNTIL LINE[1,1]='<' OR LINE.CNTR > NUM.LINES DO REPEAT
 
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.NUMBER","response.status",HTTP.STATUS.CODE,"",RERR)
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.STRING","response.http_type",HTTP.STATUS.CODE,"",RERR)
 
-      *CALL MVDBTOOLKIT.WOBJ(EOBJ,"TOSTRING","",TEST.JSON,"PRETTIFY",RERR)
-      CALL MVDBTOOLKIT.WOBJ(EOBJ,"GET","result.result",EXECUTE.RESULT,"",RERR)
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.STRING","response.data",EXECUTE.RESULT,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.ARRAY","response.log","[]","",RERR)
+
+CONVERT CHAR(13) TO @AM IN RESPONSE.STDERR
+CONVERT CHAR(10) TO "" IN RESPONSE.STDERR
+NUM.LINES=DCOUNT(RESPONSE.STDERR,@AM)
+FOR L=1 TO NUM.LINES
+    LINE=RESPONSE.STDERR<L>
+    CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.STRING","response.log[-1]",LINE,"",RERR)
+NEXT L
+
+
+
+
+*CALL MVDBTOOLKIT.WOBJ(EOBJ,"TOSTRING","",TEST.JSON,"PRETTIFY",RERR)
+CALL MVDBTOOLKIT.WOBJ(EOBJ,"GET","result.result",EXECUTE.RESULT,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.STRING","response.data",EXECUTE.RESULT,"",RERR)
 end.of.call: *
 
-      CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.STRING","response.curl_cmnd",CMND,"",RERR)
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"SET.STRING","response.curl_cmnd",CMND,"",RERR)
 
-      RETURN
+RETURN
 
 
