@@ -207,7 +207,7 @@ PRINT "Test: ":TEST[1,20]"L(#20)":
 RETURN
 *
 end.test: *
-PRINT "  ":TEST.MSG[1,60]"L(#60)":
+PRINT "  ":TEST.MSG[1,60]"L(#50)":
 PRINT " ":
 IF TEST.STATUS THEN PRINT "[Ok    ]" ELSE PRINT @(-13):"[Failed]":@(-14)
 RETURN
