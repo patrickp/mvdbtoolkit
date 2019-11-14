@@ -48,7 +48,7 @@ FOR X=1 TO L
                 IF PRETTIFYCR THEN OUT.STR:=NL
             CASE SEQ.C=13; OUT.STR:='\r'
             CASE SEQ.C=12; OUT.STR:='\f'
-            CASE 1; OUT.STR:='\u00':OCONV(C,'MX')
+            CASE 1; OUT.STR:='\u00':OCONV(C,'MX0C')
         END CASE
     END ELSE
         OUT.STR=OUT.STR:C

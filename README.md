@@ -5,12 +5,15 @@ Toolkit to hold cross platform utilities for common actions that are different b
 
 The idea of this library is for it to be cross platform, handling both mv types and O/S differences
 
+## Version 2.0 - 5/22/2019
+
 ### MVDBTOOLKIT.WPLATFORM
 
 This function gets the platform information.  Instead of guessing this routine pulls a json config item from the MD/Voc.
 This was faster/easier than detecting.  This could be improved in the future to do auto detection.
 
-MD/VOC MVDBTOOLKIT.PLATFORM.JSON
+DICT MVDBTOOLKIT.BP MVDBTOOLKIT.PLATFORM.JSON
+
 <pre>
 { "mvtype": "D3,JBASE",
   "platform": "WINDOWS or LINUX"
@@ -89,6 +92,9 @@ This is a front end to curl.  It is passed a object for options
 *    "url":"URL TO CALL",
 *    "headers": { "HEADERNAME":"VALUE", "HEADERNAME":"VALUE" },
 *    "body":"BODY",
+*    "formfields": [
+*        { "name":"field name","value":"field value"}
+*    ],
 *    "insecure":"Yes,Y,YES - Sets the -k on curl",
 *    "options":"curl options to add to curl command",
 *    "timeout": ## (default is 45)

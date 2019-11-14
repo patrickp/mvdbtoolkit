@@ -62,7 +62,7 @@ LOOP
             JSONOBJECT(JSONOBJECT$NODEPARTS.TYPE)<1,NODEID,PARTPOS>=PARSEVALUE<1>
             V=PARSEVALUE<2>
             IF INDEX(V,LF,1) OR INDEX(V,CR,1) THEN
-                V=OCONV(V,"MX")
+                V=OCONV(V,"MX0C")
                 E="H"
             END ELSE
                 E="A"
