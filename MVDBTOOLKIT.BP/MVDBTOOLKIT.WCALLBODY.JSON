@@ -14,13 +14,13 @@
       "Access-Control-Allow-Credentials": "true", 
       "Access-Control-Allow-Origin": "*", 
       "Content-Type": "application/json", 
-      "Date": "Thu, 14 Nov 2019 19:57:17 GMT", 
+      "Date": "Thu, 14 Nov 2019 20:16:41 GMT", 
       "Referrer-Policy": "no-referrer-when-downgrade", 
       "Server": "nginx", 
       "X-Content-Type-Options": "nosniff", 
       "X-Frame-Options": "DENY", 
       "X-XSS-Protection": "1; mode=block", 
-      "Content-Length": "467", 
+      "Content-Length": "554", 
       "Connection": "keep-alive"
       }, 
     "status": 200, 
@@ -34,20 +34,21 @@
   \"data\": \"\", 
   \"files\": {}, 
   \"form\": {
-    \"{\\r\\n  \\\"test\\\": \\\"value\\\"\\r\\n  }\\r\\n\": \"\"
+    \"{\\r\\n  \\\"test\\\": \\\"value\\\"\\r\\n  }\\n\": \"\"
   }, 
   \"headers\": {
     \"Accept\": \"*/*\", 
-    \"Content-Length\": \"27\", 
+    \"Content-Length\": \"26\", 
     \"Content-Type\": \"application/x-www-form-urlencoded\", 
     \"Host\": \"httpbin.org\", 
-    \"User-Agent\": \"curl/7.55.1\"
+    \"User-Agent\": \"curl/7.19.7 (x86_64-redhat-linux-gnu) libcurl/7.19.7 NSS/3.27.1 zlib/1.2.3 libidn/1.18 libssh2/1.4.2\"
   }, 
   \"json\": null, 
   \"method\": \"POST\", 
   \"origin\": \"98.173.13.82, 98.173.13.82\", 
   \"url\": \"https://httpbin.org/anything?field1=value1\"
-}", 
-    "curl_cmnd": "curl -s -m 45 -X POST -D %HOME%/WCALL-2.headers -v --stderr %HOME%/WCALL-2.stderr --data-binary @%HOME%/WCALL-2.body \"https://httpbin.org/anything?field1=value1\""
+}
+", 
+    "curl_cmnd": "curl -s -m 45 -X POST -D /tmp/WCALL-12.headers -v --stderr /tmp/WCALL-12.stderr --data-binary @/tmp/WCALL-12.body \"https://httpbin.org/anything?field1=value1\""
     }
   }
