@@ -39,11 +39,28 @@ GOSUB end.test
 TEST="WCALL.RESPONSECODE"
 GOSUB start.test
 
- CALL @WOBJ.RTNE(OBJ,"FROMSTRING","","{}","",RERR)
- CALL @WOBJ.RTNE(OBJ,"SET","method","GET","",RERR)
- CALL @WOBJ.RTNE(OBJ,"SET","url","https://raw.githubusercontent.com/patrickp/mvdbtoolkit/master/MVDBTOOLKIT.txt","",RERR)
+CALL @WOBJ.RTNE(OBJ,"FROMSTRING","","{}","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","method","POST","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","url","https://httpbin.org/anything?field1=value1","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","insecure","Y","",RERR)
+ 
+ CALL @WOBJ.RTNE(OBJ,"SET.OBJECT","headers","{}","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","headers.X-TEST-HEADER","headertest","",RERR)
+ 
+ CALL @WOBJ.RTNE(OBJ,"SET.ARRAY","formfields","[]","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET.OBJECT","formfields[-1]","{}","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","formfields[0].name","field2","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","formfields[0].value","VALUE2$","",RERR)
+ 
+ CALL @WOBJ.RTNE(SOBJ,"FROMSTRING","","{}","",RERR)
+ CALL @WOBJ.RTNE(SOBJ,"SET","name","field3","",RERR)
+ CALL @WOBJ.RTNE(SOBJ,"SET","value","<EXAMPLE HTML>","",RERR)
+ CALL @WOBJ.RTNE(SOBJ,"TOSTRING","",SJSON,"",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET.OBJECT","formfields[-1]",SJSON,"",RERR)
+ 
+ 
  CALL MVDBTOOLKIT.WCALL(OBJ)
+
  CALL @WOBJ.RTNE(OBJ,"GET","response.data",RESPONSE,"",RERR)
  *PRINT "RESPONSE=":RESPONSE
  
