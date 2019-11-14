@@ -1,0 +1,23 @@
+{
+  "args": {
+    "field1": "value1"
+  }, 
+  "data": "", 
+  "files": {}, 
+  "form": {
+    "field2": "VALUE2$", 
+    "field3": "<EXAMPLE HTML>"
+  }, 
+  "headers": {
+    "Accept": "*/*", 
+    "Content-Length": "257", 
+    "Content-Type": "multipart/form-data; boundary=------------------------b8402ae718da2fa8", 
+    "Host": "httpbin.org", 
+    "User-Agent": "curl/7.55.1", 
+    "X-Test-Header": "headertest"
+  }, 
+  "json": null, 
+  "method": "POST", 
+  "origin": "98.173.13.82, 98.173.13.82", 
+  "url": "https://httpbin.org/anything?field1=value1"
+}

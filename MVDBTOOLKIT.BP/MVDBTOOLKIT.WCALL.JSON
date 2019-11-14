@@ -1,0 +1,62 @@
+{
+  "method": "POST", 
+  "debug": "N", 
+  "url": "https://httpbin.org/anything?field1=value1", 
+  "insecure": "Y", 
+  "headers": {
+    "X-TEST-HEADER": "headertest"
+    }, 
+  "formfields": [
+    {
+      "name": "field2", 
+      "value": "VALUE2$"
+      }, 
+    {
+      "name": "field3", 
+      "value": "<EXAMPLE HTML>"
+      }
+    ], 
+  "response": {
+    "headers": {
+      "Access-Control-Allow-Credentials": "true", 
+      "Access-Control-Allow-Origin": "*", 
+      "Content-Type": "application/json", 
+      "Date": "Thu, 14 Nov 2019 19:05:40 GMT", 
+      "Referrer-Policy": "no-referrer-when-downgrade", 
+      "Server": "nginx", 
+      "X-Content-Type-Options": "nosniff", 
+      "X-Frame-Options": "DENY", 
+      "X-XSS-Protection": "1; mode=block", 
+      "Content-Length": "550", 
+      "Connection": "keep-alive"
+      }, 
+    "status": 100, 
+    "http_type": "HTTP/1.1", 
+    "statusmsg": "Continue", 
+    "log": [], 
+    "data": "{
+  \"args\": {
+    \"field1\": \"value1\"
+  }, 
+  \"data\": \"\", 
+  \"files\": {}, 
+  \"form\": {
+    \"field2\": \"VALUE2$\", 
+    \"field3\": \"<EXAMPLE HTML>\"
+  }, 
+  \"headers\": {
+    \"Accept\": \"*/*\", 
+    \"Content-Length\": \"257\", 
+    \"Content-Type\": \"multipart/form-data; boundary=------------------------b8402ae718da2fa8\", 
+    \"Host\": \"httpbin.org\", 
+    \"User-Agent\": \"curl/7.55.1\", 
+    \"X-Test-Header\": \"headertest\"
+  }, 
+  \"json\": null, 
+  \"method\": \"POST\", 
+  \"origin\": \"98.173.13.82, 98.173.13.82\", 
+  \"url\": \"https://httpbin.org/anything?field1=value1\"
+}", 
+    "curl_cmnd": "curl -s -m 45 -X POST -H \"X-TEST-HEADER: headertest\" -D %HOME%/WCALL-2.headers -v --stderr %HOME%/WCALL-2.stderr --form-string field2=\"VALUE2$\" --form-string field3=\"<EXAMPLE HTML>\" \"https://httpbin.org/anything?field1=value1\""
+    }
+  }

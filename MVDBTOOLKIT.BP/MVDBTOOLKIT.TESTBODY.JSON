@@ -1,0 +1,21 @@
+{
+  "args": {
+    "field1": "value1"
+  }, 
+  "data": "", 
+  "files": {}, 
+  "form": {
+    "{\r\n  \"test\": \"value\"\r\n  }\r\n": ""
+  }, 
+  "headers": {
+    "Accept": "*/*", 
+    "Content-Length": "27", 
+    "Content-Type": "application/x-www-form-urlencoded", 
+    "Host": "httpbin.org", 
+    "User-Agent": "curl/7.55.1"
+  }, 
+  "json": null, 
+  "method": "POST", 
+  "origin": "98.173.13.82, 98.173.13.82", 
+  "url": "https://httpbin.org/anything?field1=value1"
+}
