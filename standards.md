@@ -23,3 +23,7 @@ ED VOC MVDBTOOLKIT.WOBJ.BP
 2>mvdbtoolkit\mvdbtoolkit.bp]mwobj.bp
 3>D_MVDBTOOLKIT
 
+# SENTENCE=()
+
+Unidata syntax: @SENTENCE() vs SENTENCE()
+
