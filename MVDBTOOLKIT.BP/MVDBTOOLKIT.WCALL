@@ -21,7 +21,13 @@ SUBROUTINE MVDBTOOLKIT.WCALL(MVDBTOOLKIT.WOBJ)
 *            "fieldtype":"blank or file" for now
 *         }
 *     ],
-*
+*    "datafields": [
+*         {
+*            "name":"field name",
+*            "value":"field value",
+*            "fieldtype":"blank or file" for now
+*         }
+*     ],
 *    "insecure":"Yes,Y,YES - Sets the -k on curl",
 *    "timeout": ## (default is 45),
 *    "options":"options to add to curl command",
@@ -142,6 +148,26 @@ FOR X=1 TO NUM.FORMFIELDS
  END
 NEXT X
 
+* form fields *
+CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"LENGTH","datafields",NUM.FORMFIELDS,"",RERR)
+
+FOR X=1 TO NUM.FORMFIELDS
+ P="datafields[":X-1:"]"
+ CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET",P:'.name',FIELD.NAME,"",RERR)
+ CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET",P:'.value',FIELD.VALUE,"",RERR)
+ CALL MVDBTOOLKIT.WOBJ(MVDBTOOLKIT.WOBJ,"GET",P:'.fieldtype',FIELD.TYPE,"",RERR)
+ CALL MVDBTOOLKIT.SWAP(FIELD.VALUE,'@','%40')
+ CALL MVDBTOOLKIT.SWAP(FIELD.VALUE,'$','%24')
+ CALL MVDBTOOLKIT.SWAP(FIELD.VALUE,'/','%2F')
+ CALL MVDBTOOLKIT.SWAP(FIELD.VALUE,':':,'%3A')
+
+ IF TRIM(FIELD.NAME) # "" THEN
+    TMP.CMND="-d "
+    TMP.CMND:=FIELD.NAME:'="'
+    TMP.CMND:=FIELD.VALUE:'"'
+    CMND:=' ':TMP.CMND
+ END
+NEXT X
 * NOW ADD THE URL
 
 CALL MVDBTOOLKIT.SWAP(WEB.URL,' ','%20')
