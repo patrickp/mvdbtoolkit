@@ -38,7 +38,10 @@
             END
       END
 
+      CONVERT CHAR(254) TO '' IN PLATFORMOBJ.JSON
+      
       CALL MVDBTOOLKIT.WOBJ(PLATFORMOBJ,"FROMSTRING","",PLATFORMOBJ.JSON,"",RERR)
+
       
       * 9/2/2019 PAP - We now figure out filedelim vs passing it in original config filedelim
 
