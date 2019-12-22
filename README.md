@@ -93,7 +93,10 @@ This is a front end to curl.  It is passed a object for options
 *    "headers": { "HEADERNAME":"VALUE", "HEADERNAME":"VALUE" },
 *    "body":"BODY",
 *    "formfields": [
-*        { "name":"field name","value":"field value"}
+*        { "name":"field name","value":"field value", "fieldtype":"Optional=file if this should be a file, value is the path" }
+*    ],
+*    "datafields": [
+*        { "name":"field name","value":field value"}
 *    ],
 *    "insecure":"Yes,Y,YES - Sets the -k on curl",
 *    "options":"curl options to add to curl command",
