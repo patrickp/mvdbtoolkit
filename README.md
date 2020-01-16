@@ -121,7 +121,7 @@ This is a front end to curl.  It is passed a object for options
 | jBase/Windows    | Pass   | 1/16/2020                                      |
 | jBASE/Linux      | Pass   | 1/16/2020 - Need to add config auto            |
 | d3/Windows       |        |                                                |
-| d3/Linux         |        |                                                |
+| d3/Linux         | Pass   | 1/16/2020 - Needed to add delete to func       |
 | Unidata/Windows  |        |                                                |
 | Unidata/Linux    |        |                                                |
 | Universe/Windows |        |                                                |
@@ -130,3 +130,10 @@ This is a front end to curl.  It is passed a object for options
 | Qm/Linux         |        |                                                |
 
 * Need to auto-populate the platform config item
+
+#### d3/Linux
+System: 1010.17.205
+Account: MVDB
+Path: /home/d3packages/mvdbtoolkit/D3
+
+
