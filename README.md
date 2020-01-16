@@ -1,7 +1,6 @@
 # mvdbtoolkit
 Toolkit to hold cross platform utilities for common actions that are different between platforms.
 
-## Version 2.0
 
 The idea of this library is for it to be cross platform, handling both mv types and O/S differences
 
@@ -110,5 +109,21 @@ This is a front end to curl.  It is passed a object for options
 *    }
 *  }
 </pre>
+
+
+#### Deployment
+
+| Platform         | Status | Notes                                          |
+| ---------------- | ------ | ---------------------------------------------- |
+| jBase/Windows    | Pass   | 1/16/2020                                      |
+| jBASE/Linux      |        |                                                |
+| d3/Windows       |        |                                                |
+| d3/Linux         |        |                                                |
+| Unidata/Windows  |        |                                                |
+| Unidata/Linux    |        |                                                |
+| Universe/Windows |        |                                                |
+| Universe/Linux   |        |                                                |
+| Qm/Windows       |        |                                                |
+| Qm/Linux         |        |                                                |
 
 
