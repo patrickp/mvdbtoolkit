@@ -119,7 +119,7 @@ This is a front end to curl.  It is passed a object for options
 | Platform         | Status | Notes                                          |
 | ---------------- | ------ | ---------------------------------------------- |
 | jBase/Windows    | Pass   | 1/16/2020                                      |
-| jBASE/Linux      |        |                                                |
+| jBASE/Linux      | Pass   | 1/16/2020 - Need to add config auto            |
 | d3/Windows       |        |                                                |
 | d3/Linux         |        |                                                |
 | Unidata/Windows  |        |                                                |
@@ -129,4 +129,4 @@ This is a front end to curl.  It is passed a object for options
 | Qm/Windows       |        |                                                |
 | Qm/Linux         |        |                                                |
 
-
+* Need to auto-populate the platform config item
