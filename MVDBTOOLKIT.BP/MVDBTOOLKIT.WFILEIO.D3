@@ -70,7 +70,7 @@
 
 
       OPEN FILEIO.JUST.PATH TO FI ELSE
-         IF INDEX(FILEIO.JUST.PATH,"AppData\Local\Temp",1) THEN
+         IF INDEX(FILEIO.JUST.PATH,"AppData\Local\Temp",1) OR INDEX(FILEIO.JUST.PATH,'\tmp',1) THEN
             * SPECIAL PATCH FOR D3/WINDOWS.  D3 is running as a system user and it appears
             * the Temp directory does not always exist
             EXECUTE '!mkdir ':FILEIO.JUST.PATH

@@ -116,24 +116,39 @@ This is a front end to curl.  It is passed a object for options
 
 #### Deployment
 
-| Platform         | Status | Notes                                          |
-| ---------------- | ------ | ---------------------------------------------- |
-| jBase/Windows    | Pass   | 1/16/2020                                      |
-| jBASE/Linux      | Pass   | 1/16/2020 - Need to add config auto            |
-| d3/Windows       |        |                                                |
-| d3/Linux         | Pass   | 1/16/2020 - Needed to add delete to func       |
-| Unidata/Windows  |        |                                                |
-| Unidata/Linux    |        |                                                |
-| Universe/Windows |        |                                                |
-| Universe/Linux   |        |                                                |
-| Qm/Windows       |        |                                                |
-| Qm/Linux         |        |                                                |
+| Platform         | Status | 
+| ---------------- | ------ | 
+| jBase/Windows    |        | 
+| jBASE/Linux      |        | 
+| d3/Windows       | Pass   | 
+| d3/Linux         |        |
+| Unidata/Windows  |        |
+| Unidata/Linux    |        |
+| Universe/Windows |        |
+| Universe/Linux   |        |
+| Qm/Windows       |        |
+| Qm/Linux         |        |
 
 * Need to auto-populate the platform config item
 
 #### d3/Linux
-System: 1010.17.205
+System: 10.10.17.205
 Account: MVDB
 Path: /home/d3packages/mvdbtoolkit/D3
+
+### d3/Windows
+System: 10.10.17.41
+Account: dm
+Path: c:\d3packages\mvdbtoolkit
+
+Currently using git from remote desktop!!
+
+Still needed to auto create platform json, should add this to mvmake!
+
+1/17/2020  10:56: Fixed WFILEIO write.  Needed to add create temp option
+1/17/2020  10:57: Failing at WCALL.RESPONSE.  - Should fix wobj variable not assigned issue also!!
+1/19/2020  2:31pm Update wobj to check for unassigned passedobj and action.  Had to update tmp dor d3/windows to be c:\tmp with auto create
+1/19/2020  2:31pm Need to re-test all platforms!!!
+
 
 
