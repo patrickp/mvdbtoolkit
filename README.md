@@ -118,7 +118,7 @@ This is a front end to curl.  It is passed a object for options
 
 | Platform         | Status | 
 | ---------------- | ------ | 
-| jBase/Windows    |        | 
+| jBase/Windows    | Pass   | 
 | jBASE/Linux      |        | 
 | d3/Windows       | Pass   | 
 | d3/Linux         |        |
@@ -135,6 +135,8 @@ This is a front end to curl.  It is passed a object for options
 System: 10.10.17.205
 Account: MVDB
 Path: /home/d3packages/mvdbtoolkit/D3
+
+1/19/2020 2:40pm Passed Test
 
 ### d3/Windows
 System: 10.10.17.41

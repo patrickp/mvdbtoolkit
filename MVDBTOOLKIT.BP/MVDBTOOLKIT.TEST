@@ -167,7 +167,7 @@ GOSUB start.test
 CALL @WOBJ.RTNE(OBJ,"FROMSTRING","","{}","",RERR)
 
  CALL @WOBJ.RTNE(OBJ,"SET","method","POST","",RERR)
- CALL @WOBJ.RTNE(OBJ,"SET","debug","Y","",RERR)
+ CALL @WOBJ.RTNE(OBJ,"SET","debug","N","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","url","https://httpbin.org/anything?field1=value1","",RERR)
  CALL @WOBJ.RTNE(OBJ,"SET","insecure","Y","",RERR)
  
