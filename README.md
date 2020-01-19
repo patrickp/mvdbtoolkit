@@ -132,11 +132,13 @@ This is a front end to curl.  It is passed a object for options
 * Need to auto-populate the platform config item
 
 #### d3/Linux
+```
 System: 10.10.17.205
 Account: MVDB
 Path: /home/d3packages/mvdbtoolkit/D3 
-
+```
 ### d3/Windows
+```
 System: 10.10.17.41
 Account: dm
 Path: c:\d3packages\mvdbtoolkit
@@ -149,16 +151,19 @@ Still needed to auto create platform json, should add this to mvmake!
 1/17/2020  10:57: Failing at WCALL.RESPONSE.  - Should fix wobj variable not assigned issue also!!
 1/19/2020  2:31pm Update wobj to check for unassigned passedobj and action.  Had to update tmp dor d3/windows to be c:\tmp with auto create
 1/19/2020  2:31pm Need to re-test all platforms!!!
-
+```
 ### jbase/Windows
+```
 System: Local
 Account: JBASEDEV
 
 1/19/2020 2:35pm Passed Test
-
+```
 ### jBASE/Linux
+```
 System: Docker jbasedev
 Account: JBASEADM
 1/19/2020
 
 1/19/2020 2:44PM Passed Test
+````
