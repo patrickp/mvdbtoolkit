@@ -134,10 +134,16 @@ This is a front end to curl.  It is passed a object for options
 #### d3/Linux
 ```
 System: 10.10.17.205
-Account: MVDB
+Account: DM
 Path: /home/d3packages/mvdbtoolkit/D3 
+
+1/19/2020 3:00pm Passed Test.  Moved to dm.
+
 ```
+
+
 ### d3/Windows
+
 ```
 System: 10.10.17.41
 Account: dm
