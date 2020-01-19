@@ -119,7 +119,7 @@ This is a front end to curl.  It is passed a object for options
 | Platform         | Status | 
 | ---------------- | ------ | 
 | jBase/Windows    | Pass   | 
-| jBASE/Linux      |        | 
+| jBASE/Linux      | Pass   |
 | d3/Windows       | Pass   | 
 | d3/Linux         |        |
 | Unidata/Windows  |        |
@@ -134,9 +134,7 @@ This is a front end to curl.  It is passed a object for options
 #### d3/Linux
 System: 10.10.17.205
 Account: MVDB
-Path: /home/d3packages/mvdbtoolkit/D3
-
-1/19/2020 2:40pm Passed Test
+Path: /home/d3packages/mvdbtoolkit/D3 
 
 ### d3/Windows
 System: 10.10.17.41
@@ -152,5 +150,15 @@ Still needed to auto create platform json, should add this to mvmake!
 1/19/2020  2:31pm Update wobj to check for unassigned passedobj and action.  Had to update tmp dor d3/windows to be c:\tmp with auto create
 1/19/2020  2:31pm Need to re-test all platforms!!!
 
+### jbase/Windows
+System: Local
+Account: JBASEDEV
 
+1/19/2020 2:35pm Passed Test
 
+### jBASE/Linux
+System: Docker jbasedev
+Account: JBASEADM
+1/19/2020
+
+1/19/2020 2:44PM Passed Test
