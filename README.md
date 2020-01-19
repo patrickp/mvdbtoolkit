@@ -173,3 +173,20 @@ Account: JBASEADM
 
 1/19/2020 2:44PM Passed Test
 ````
+
+### UNIDATA/Linux
+```
+System: 10.10.17.112
+Account /home/MVDB
+Packages: /usr/local/mvappsvr/pkgs
+
+1/19/2020 3:48pm:  Needed to create include directory for wobj.  This is to handle ASSIGNED vs UNASSIGNED.  This is in the
+                   MVDBTOOLKIT.WOBJ program.  Created MVDBTOOLKIT.BP]MWOBJ.BP/UNIDATA and put include in that location.
+                   Started preping MVMAKE to handle the creation of this
+                   mvdbtoolkit/MVDBTOOLKIT.BP]MWOBJ.BP/UNIDATA -> MVDBTOOLKIT.BP.WOBJ.BP.INCLUDE
+                   * Want to move away from JBASE naming, should be
+                   mvdbtoolkit/WOBJ.BP/UNIDATA.
+                   
+```
+
+
