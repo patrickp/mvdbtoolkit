@@ -199,6 +199,7 @@ password: MV4sd****
 
 1/19/2020  3:55pm - No git on the system?  Checking RDP
 1/19/2020  4:10PM - MVMAKE NOT QUITE WORKING.  CATALOG MVDBTOOLKIT.BP FORCE - Force catalog creation
+1/19/2020  4:14PM - Passed test.
 
 
 
