@@ -172,7 +172,7 @@ Account: JBASEADM
 1/19/2020
 
 1/19/2020 2:44PM Passed Test
-````
+```
 
 ### UNIDATA/Linux
 ```
@@ -200,7 +200,17 @@ password: MV4sd****
 1/19/2020  3:55pm - No git on the system?  Checking RDP
 1/19/2020  4:10PM - MVMAKE NOT QUITE WORKING.  CATALOG MVDBTOOLKIT.BP FORCE - Force catalog creation
 1/19/2020  4:14PM - Passed test.
+```
 
+### QM/LINUX
+System: Docker/qm
+Account: /usr/qmsys
+Packages /usr/qmsys
 
+1/21/2020 11:18am - QM wants a BP.OUT file.  Had to work out F multi-part concept.  This is probably the same
+                    as Universe.  
+                    WOBJ appears to work.
+                    MVDBTOOLKIT is failing immediately.  It does not appear to be parsing the config file.
+                    
 
 
