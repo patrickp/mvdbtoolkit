@@ -18,6 +18,8 @@
       *   "tmpdir"  :"tmp dir"
       * }
 
+      * nEW lINE
+
       USE.DICT=1
       OPEN "DICT","MVDBTOOLKIT.BP" TO DICT.MVDBTOOLKIT.BP ELSE USE.DICT=0
 
