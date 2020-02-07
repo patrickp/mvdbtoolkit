@@ -203,6 +203,7 @@ password: MV4sd****
 ```
 
 ### QM/LINUX
+```
 System: Docker/qm
 Account: /usr/qmsys
 Packages /usr/qmsys
@@ -211,6 +212,36 @@ Packages /usr/qmsys
                     as Universe.  
                     WOBJ appears to work.
                     MVDBTOOLKIT is failing immediately.  It does not appear to be parsing the config file.
+02/06/2020 11:11am  Issue turned out to be UV.MODE for locate.  QM does this differently than others.
+                    Added $BASIC.OPTIONS with MODE UV.MODE to resolve issue.
+                    Instructed wgetenv to use generic version.
+                    Test Passed
+```
+
+### QM/WINDOWS
+```
+System: Local copy of QM
+Account: /usr/qmsys
+Packages: /usr/qmsys
+
+02/06/2020 11:13am  $BASIC.OPTIONS did not come over because of .gitignore directie (for jbase source object)
+                    Cannot use other platforms code due to mvmake ignoring code.<platform> code
+                    Needed to create QM clones of d3 execute and universe fileio.  Need to verify other
+                    platforms now.  We could have created a generic version and/or expanded the extension to
+                    not match any known platform
+02/06/2020 07:37pm  Update .gitignore with !$BASIC.OPTIONS
+                    Added $BASIC.OPTIONS to MVDBTOOLKIT.BP
+                    Modified wplatform to look for item called MV.PLATFORM.JSON vs MVDBTOOLKIT.PLATFORM.JSON
+                    MVMAKE will not write out this config item - Long term it would be nice to figure this out
+                    dynamically and save it in a common and eliminate the need for this config!!!
+                    
+
+
+```
+
+
+
+
                     
 
 
