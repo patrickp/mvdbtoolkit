@@ -17,7 +17,6 @@
       *   "mvtype"  :" JBASE, D3, UNIDATA, UNIVERSE, OPENQM",
       *   "tmpdir"  :"tmp dir"
       * }
-      DEBUG
 
       * nEW lINE
 
@@ -42,16 +41,12 @@
             RETURN
          END
       END
-DEBUG
       CONVERT CHAR(254) TO '' IN PLATFORMOBJ.JSON
-DEBUG
       CALL MVDBTOOLKIT.WOBJ(PLATFORMOBJ,"FROMSTRING","",PLATFORMOBJ.JSON,"",RERR)
-DEBUG
 
       * 9/2/2019 PAP - We now figure out filedelim vs passing it in original config filedelim
 
       CALL MVDBTOOLKIT.WOBJ(PLATFORMOBJ,"GET","platform",PLATFORM,"",RERR)
-DEBUG
       CALL MVDBTOOLKIT.WOBJ(PLATFORMOBJ,"GET","mvtype",MV.TYPE,"",RERR)
       IF PLATFORM="WINDOWS" THEN DELIM = "\" ELSE DELIM = "/"
       CALL MVDBTOOLKIT.WOBJ(PLATFORMOBJ,"SET","filedelim",DELIM,"",RERR)
