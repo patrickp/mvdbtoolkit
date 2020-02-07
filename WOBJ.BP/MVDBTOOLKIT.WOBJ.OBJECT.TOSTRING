@@ -9,7 +9,6 @@ SUBROUTINE MVDBTOOLKIT.WOBJ.OBJECT.TOSTRING(JSON,POS)
 *
 **********************************************************************
 *
-$MODE UV.LOCATE
 
 INCLUDE MVDBTOOLKIT.WOBJ.INCLUDE
 *
