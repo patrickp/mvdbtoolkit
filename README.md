@@ -121,7 +121,7 @@ This is a front end to curl.  It is passed a object for options
 | jBase/Windows    |        | 
 | jBASE/Linux      |        |
 | d3/Windows       | Pass   | 
-| d3/Linux         |        |
+| d3/Linux         | Pass   |
 | Unidata/Windows  |        |
 | Unidata/Linux    |        |
 | Universe/Windows |        |
