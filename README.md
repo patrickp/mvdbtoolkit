@@ -118,7 +118,7 @@ This is a front end to curl.  It is passed a object for options
 
 | Platform         | Status | 
 | ---------------- | ------ | 
-| jBase/Windows    |        | 
+| jBase/Windows    | Pass   | 
 | jBASE/Linux      |        |
 | d3/Windows       | Pass   | 
 | d3/Linux         | Pass   |
