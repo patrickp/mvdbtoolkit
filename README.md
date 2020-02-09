@@ -157,6 +157,7 @@ Still needed to auto create platform json, should add this to mvmake!
 1/17/2020  10:57: Failing at WCALL.RESPONSE.  - Should fix wobj variable not assigned issue also!!
 1/19/2020  2:31pm Update wobj to check for unassigned passedobj and action.  Had to update tmp dor d3/windows to be c:\tmp with auto create
 1/19/2020  2:31pm Need to re-test all platforms!!!
+02/09/2020 01:08pm For some reason this curl is triggering http/2.  Adjusted to allow both.
 ```
 ### jbase/Windows
 ```
