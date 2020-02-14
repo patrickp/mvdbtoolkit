@@ -196,7 +196,6 @@ System: 10.10.17.113
 Account c:\udaccounts\MVDB
 Packages: c:\udaccounts\MVDB
 user: administrator
-password: MV4sd****
 
 1/19/2020  3:55pm - No git on the system?  Checking RDP
 1/19/2020  4:10PM - MVMAKE NOT QUITE WORKING.  CATALOG MVDBTOOLKIT.BP FORCE - Force catalog creation
