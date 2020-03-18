@@ -117,11 +117,11 @@ This is a front end to curl.  It is passed a object for options
 #### Deployment
 
 | Platform         | Status | 
-| ---------------- | ------ | 
-| jBase/Windows    | Pass   | 
-| jBASE/Linux      | Pass   | - New line on compile.txt had wrong chars?
+| ---------------- | ----------------- | 
+| jBase/Windows    | Pass 03/18/2020   | 
+| jBASE/Linux      | Pass 03/18/2020   | - New line on compile.txt had wrong chars?
 | d3/Windows       |        | 
-| d3/Linux         |        |
+| d3/Linux         | Pass 03/18/2020   |
 | Unidata/Windows  |        |
 | Unidata/Linux    |        |
 | Universe/Windows |        |
