@@ -123,7 +123,7 @@ This is a front end to curl.  It is passed a object for options
 | d3/Windows       |        | 
 | d3/Linux         | Pass 03/18/2020   |
 | Unidata/Windows  |        |
-| Unidata/Linux    |        |
+| Unidata/Linux    | Fail 03/19/2020   | - Needed .O items???
 | Universe/Windows |        |
 | Universe/Linux   |        |
 | Qm/Windows       |        |
